@@ -1,0 +1,99 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE, withBase } from "../lib/site";
+import { getEntry, getCollection } from "astro:content";
+
+const home = await getEntry("pages", "home");
+const data: any = home?.data ?? {};
+
+const work = (await getCollection("work")).filter((w) => w.data.featured);
+const writing = (await getCollection("writing")).filter((w) => w.data.featured);
+const talks = (await getCollection("talks")).slice(0, 4);
+
+const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
+
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE.name,
+  jobTitle: "Product Leader, AI/ML",
+  url: new URL(withBase("/"), Astro.site).href,
+  sameAs: Object.values(SITE.profiles),
+};
+---
+<Base jsonLd={person}>
+  <section class="hero">
+    <h1>{SITE.name}</h1>
+    <p class="positioning">{data.positioning}</p>
+    <div class="ctas">
+      {(data.ctas ?? []).map((c: any) => (
+        <a
+          class={"btn" + (String(c.label).toLowerCase().includes("cv") ? " secondary" : "")}
+          href={withBase(c.href)}
+        >{c.label}</a>
+      ))}
+    </div>
+  </section>
+
+  {data.credibility_strip && (
+    <>
+      <div class="section-label">Recognition</div>
+      <ul class="chips">
+        {data.credibility_strip.map((c: any) => (
+          <li>
+            {real(c.href)
+              ? <a href={c.href} target="_blank" rel="noopener">{c.label}</a>
+              : <span>{c.label}</span>}
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  {work.length > 0 && (
+    <>
+      <div class="section-label">Selected work</div>
+      <ul class="cards">
+        {work.map((w) => (
+          <li class="card">
+            <h3><a class="title" href={withBase(`/work/${w.id}`)}>{w.data.title}</a></h3>
+            <div class="meta">{w.data.role} · {w.data.dates}</div>
+            <p>{w.data.summary}</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  {writing.length > 0 && (
+    <>
+      <div class="section-label">Writing</div>
+      <ul class="cards">
+        {writing.map((a) => (
+          <li class="card">
+            <h3><a class="title" href={withBase(`/writing/${a.id}`)}>{a.data.title}</a></h3>
+            {a.data.summary && <p>{a.data.summary}</p>}
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  {talks.length > 0 && (
+    <>
+      <div class="section-label">Talks &amp; lectures</div>
+      <ul class="itemlist">
+        {talks.map((t) => (
+          <li>
+            <div class="row">
+              <span class="t">{t.data.title}</span>
+              <span class="d">{t.data.venue}</span>
+            </div>
+            {t.data.note && <div class="note">{t.data.note}</div>}
+          </li>
+        ))}
+      </ul>
+      <p class="small"><a href={withBase("/talks")}>All talks →</a></p>
+    </>
+  )}
+</Base>

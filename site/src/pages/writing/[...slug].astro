@@ -1,0 +1,37 @@
+---
+import Base from "../../layouts/Base.astro";
+import { SITE, withBase } from "../../lib/site";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const items = await getCollection("writing");
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const d: any = item.data;
+const { Content } = await render(item);
+const external = typeof d.external_url === "string" && /^https?:\/\//.test(d.external_url);
+
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: d.title,
+  description: d.summary,
+  author: { "@type": "Person", name: SITE.name },
+  ...(external ? { url: d.external_url } : {}),
+};
+---
+<Base title={d.title} description={d.summary} ogType="article" jsonLd={articleLd}>
+  <p class="small"><a href={withBase("/writing")}>← Writing</a></p>
+  <h1>{d.title}</h1>
+  <p class="muted">
+    {d.status === "draft" ? "Draft — placement pending" : [d.publication, d.date].filter(Boolean).join(" · ")}
+  </p>
+  {d.summary && <p class="lead">{d.summary}</p>}
+  {external ? (
+    <p><a class="btn" href={d.external_url} target="_blank" rel="noopener">Read on {d.publication ?? "the publication"} →</a></p>
+  ) : (
+    <article class="prose"><Content /></article>
+  )}
+</Base>

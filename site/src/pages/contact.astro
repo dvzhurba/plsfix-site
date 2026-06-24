@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../lib/site";
+---
+<Base title="Contact" description="Get in touch with Denis Zhurba.">
+  <h1>Contact</h1>
+  <p>The best way to reach me is by email.</p>
+  <p><a class="btn" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+
+  <div class="section-label">Elsewhere</div>
+  <ul class="itemlist">
+    {Object.entries(SITE.profiles).map(([label, url]) => (
+      <li>
+        <div class="row">
+          <span class="t">{label}</span>
+          <a class="d" href={url} target="_blank" rel="me noopener">{url}</a>
+        </div>
+      </li>
+    ))}
+  </ul>
+</Base>

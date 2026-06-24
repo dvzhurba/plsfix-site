@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import { withBase } from "../../lib/site";
+import { getCollection } from "astro:content";
+
+const items = (await getCollection("writing")).sort((a, b) =>
+  String(b.data.date ?? "").localeCompare(String(a.data.date ?? "")),
+);
+const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
+---
+<Base title="Writing" description="Articles and analysis by Denis Zhurba.">
+  <h1>Writing</h1>
+  <p class="muted">Self-hosted pieces and stubs for externally published work, so everything is discoverable from one place.</p>
+  <ul class="itemlist">
+    {items.map((a) => (
+      <li>
+        <div class="row">
+          <a class="t" href={withBase(`/writing/${a.id}`)}>{a.data.title}</a>
+          <span class="d">
+            {a.data.status === "draft" ? "Draft" : (real(a.data.external_url) ? a.data.publication : a.data.date)}
+          </span>
+        </div>
+        {a.data.summary && <div class="note">{a.data.summary}</div>}
+      </li>
+    ))}
+  </ul>
+</Base>

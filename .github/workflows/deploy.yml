@@ -1,0 +1,57 @@
+name: Deploy site to GitHub Pages
+
+# Builds the Astro site in /site and publishes ONLY /site/dist.
+# The rest of the repo (evidence/, articles/, etc.) is never published.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "website-content/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Override these with repo Variables (Settings → Secrets and variables → Actions → Variables)
+      # Custom domain is the default. To deploy to a project page instead, set repo
+      # Variables SITE_URL=https://<user>.github.io and BASE_PATH=/uk-global-talent.
+      SITE_URL: ${{ vars.SITE_URL || 'https://www.plsfix.co.uk' }}
+      BASE_PATH: ${{ vars.BASE_PATH || '/' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      - run: npm run build
+        working-directory: site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

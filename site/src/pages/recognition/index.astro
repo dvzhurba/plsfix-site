@@ -1,0 +1,26 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const items = (await getCollection("recognition")).sort((a, b) =>
+  String(b.data.date ?? "").localeCompare(String(a.data.date ?? "")),
+);
+const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
+---
+<Base title="Recognition" description="Awards, judging, mentoring, and press for Denis Zhurba.">
+  <h1>Recognition</h1>
+  <p class="muted">Awards, mentoring, judging, and press — each linking to a verifiable source.</p>
+  <ul class="itemlist">
+    {items.map((r) => (
+      <li>
+        <div class="row">
+          <span class="t">
+            {real(r.data.url) ? <a href={r.data.url} target="_blank" rel="noopener">{r.data.title}</a> : r.data.title}
+          </span>
+          <span class="d">{[r.data.venue, r.data.date].filter((x) => x && !/todo/i.test(String(x))).join(" · ")}</span>
+        </div>
+        {r.data.note && <div class="note">{r.data.note}</div>}
+      </li>
+    ))}
+  </ul>
+</Base>

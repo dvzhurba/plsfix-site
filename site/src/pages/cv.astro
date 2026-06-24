@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import { withBase } from "../lib/site";
+import { getEntry, render } from "astro:content";
+
+const cv = await getEntry("pages", "cv");
+const data: any = cv?.data ?? {};
+const { Content } = await render(cv!);
+---
+<Base title="CV">
+  <p>
+    <a class="btn" href={withBase(data.pdf ?? "/cv.pdf")}>Download PDF</a>
+  </p>
+  <article class="prose">
+    <Content />
+  </article>
+</Base>

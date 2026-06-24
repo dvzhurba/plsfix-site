@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE, withBase } from "../lib/site";
+import { getEntry, render } from "astro:content";
+
+const about = await getEntry("pages", "about");
+const { Content } = await render(about!);
+
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE.name,
+  jobTitle: "Product Leader, AI/ML",
+  url: new URL(withBase("/"), Astro.site).href,
+  description: (about?.data as any)?.bio_short,
+  sameAs: Object.values(SITE.profiles),
+};
+---
+<Base title="About" description={(about?.data as any)?.bio_short} jsonLd={person}>
+  <article class="prose">
+    <Content />
+  </article>
+</Base>

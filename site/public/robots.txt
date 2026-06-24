@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Update the host if you deploy to a GitHub project page instead of the custom domain.
+Sitemap: https://www.plsfix.co.uk/sitemap-index.xml

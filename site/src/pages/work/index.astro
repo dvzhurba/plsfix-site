@@ -1,0 +1,22 @@
+---
+import Base from "../../layouts/Base.astro";
+import { withBase } from "../../lib/site";
+import { getCollection } from "astro:content";
+
+const items = (await getCollection("work")).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured),
+);
+---
+<Base title="Work" description="Projects and roles — impact-focused case studies.">
+  <h1>Work</h1>
+  <p class="muted">Projects and roles, with the individual contribution and outcome foregrounded.</p>
+  <ul class="cards">
+    {items.map((w) => (
+      <li class="card">
+        <h3><a class="title" href={withBase(`/work/${w.id}`)}>{w.data.title}</a></h3>
+        <div class="meta">{w.data.role}{w.data.role && w.data.dates ? " · " : ""}{w.data.dates}</div>
+        {w.data.summary && <p>{w.data.summary}</p>}
+      </li>
+    ))}
+  </ul>
+</Base>
