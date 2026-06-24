@@ -1,11 +1,11 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { withBase } from "../../lib/site";
 import { getCollection } from "astro:content";
 
 const items = (await getCollection("talks")).sort((a, b) =>
   String(b.data.date ?? "").localeCompare(String(a.data.date ?? "")),
 );
-const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
 ---
 <Base title="Talks" description="Talks, lectures, panels, and judging by Denis Zhurba.">
   <h1>Talks &amp; lectures</h1>
@@ -13,9 +13,7 @@ const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
     {items.map((t) => (
       <li>
         <div class="row">
-          <span class="t">
-            {real(t.data.url) ? <a href={t.data.url} target="_blank" rel="noopener">{t.data.title}</a> : t.data.title}
-          </span>
+          <a class="t" href={withBase(`/talks/${t.id}`)}>{t.data.title}</a>
           <span class="d">{[t.data.venue, t.data.date].filter((x) => x && !/todo/i.test(String(x))).join(" · ")}</span>
         </div>
         {t.data.note && <div class="note">{t.data.note}</div>}

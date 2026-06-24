@@ -1,0 +1,26 @@
+---
+import Base from "../../layouts/Base.astro";
+import { withBase } from "../../lib/site";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const items = await getCollection("recognition");
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const d: any = item.data;
+const { Content } = await render(item);
+const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
+const meta = [d.venue, d.date].filter((x: any) => x && !/todo/i.test(String(x))).join(" · ");
+---
+<Base title={d.title} description={d.note ?? d.title}>
+  <p class="small"><a href={withBase("/recognition")}>← Recognition</a></p>
+  <h1>{d.title}</h1>
+  {meta && <p class="muted">{meta}</p>}
+  {d.note && <p class="lead">{d.note}</p>}
+  <article class="prose"><Content /></article>
+  {real(d.url) && (
+    <p><a class="btn" href={d.url} target="_blank" rel="noopener">View source →</a></p>
+  )}
+</Base>

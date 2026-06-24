@@ -2,7 +2,7 @@
   --ink: #16181d;
   --paper: #ffffff;
   --muted: #5b6472;
-  --faint: #8a93a3;
+  --faint: #5f6877;
   --line: #e6e8ec;
   --soft: #f6f7f9;
   --accent: #1f4ed8;
@@ -26,8 +26,9 @@ body {
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
-a { color: var(--accent); text-underline-offset: 2px; }
+a { color: var(--accent); text-underline-offset: 2px; transition: color .12s ease; }
 a:hover { color: var(--accent-ink); }
+a:focus-visible, button:focus-visible, .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
 h1 { font-size: 2.1rem; margin: 0 0 0.4em; }
 h2 { font-size: 1.45rem; margin: 2em 0 0.5em; }
@@ -58,6 +59,22 @@ main { padding: 40px 0 64px; }
 .hero h1 { font-size: 2.5rem; }
 .positioning { font-size: 1.22rem; color: var(--muted); margin: 0.2em 0 1.2em; max-width: 38ch; }
 @media (max-width: 560px) { .hero h1 { font-size: 2rem; } .positioning { font-size: 1.08rem; } }
+
+/* homepage: hook + identity + play */
+.hook { font-size: 1.3rem; line-height: 1.45; color: var(--ink); margin: 0.15em 0 0; font-weight: 500; }
+@media (max-width: 560px) { .hook { font-size: 1.1rem; } }
+.identity { margin: 28px 0 10px; padding: 0; }
+.identity .idrow { display: grid; grid-template-columns: 108px 1fr; gap: 14px; padding: 10px 0; border-top: 1px solid var(--line); }
+.identity .idrow:first-child { border-top: none; }
+.identity dt { margin: 0; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--faint); font-weight: 700; padding-top: 3px; }
+.identity dd { margin: 0; font-size: 1rem; }
+@media (max-width: 560px) { .identity .idrow { grid-template-columns: 1fr; gap: 3px; } }
+.hook .arr { color: var(--accent); font-weight: 600; padding: 0 0.12em; }
+.cards.play .card { border-left: 3px solid var(--accent); transition: transform .15s ease, box-shadow .15s ease; }
+.cards.play .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.07); }
+.cards.play .card h3 { font-size: 1.02rem; margin-bottom: 2px; }
+.closing { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+.aboutline { color: var(--muted); font-size: 1.02rem; margin: 0 0 4px; }
 
 /* credibility chips */
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; padding: 0; list-style: none; }
@@ -94,6 +111,7 @@ main { padding: 40px 0 64px; }
 .section-label { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.74rem; color: var(--faint); font-weight: 700; margin: 2.4em 0 0.6em; }
 
 /* prose (article bodies) */
+.prose { max-width: 68ch; }
 .prose :is(h2, h3) { font-family: var(--serif); }
 .prose ul, .prose ol { padding-left: 1.3em; }
 .prose blockquote { margin: 1.2em 0; padding-left: 16px; border-left: 3px solid var(--line); color: var(--muted); }

@@ -3,7 +3,7 @@ export const SITE = {
   name: 'Denis Zhurba',
   title: 'Denis Zhurba — Product leader, AI/ML at scale',
   description:
-    'Denis Zhurba is a product leader building and scaling AI/ML products — communications systems at a 60M-user marketplace, smart-speaker products at VK, and BOXR, an AI sports-coaching app he founded and exited.',
+    'Denis Zhurba builds AI/ML products. Consulting and strategy, then a hands-on consumer AI startup, now AI/ML product leadership — currently in country management at an international e-commerce platform.',
   // TODO: confirm the public contact email and profile URLs before launch.
   email: 'hello@deniszhurba.com', // TODO
   profiles: {
@@ -14,7 +14,6 @@ export const SITE = {
 };
 
 export const NAV: { label: string; href: string }[] = [
-  { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Work', href: '/work' },
   { label: 'Writing', href: '/writing' },

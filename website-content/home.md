@@ -1,26 +1,31 @@
 ---
 name: Denis Zhurba
-positioning: Product leader building AI/ML products at scale — from communications systems at a 60M-user marketplace to a top-ranked AI sports-coaching app.
+hook: "Consulting and strategy → hacked a consumer AI/ML startup → AI/ML product leadership."
+identity:
+  - label: Currently
+    html: '<strong>Principal PM, Country Management</strong> at an international e-commerce platform'
+  - label: Previously
+    html: 'led AI-driven communications at <a href="/work/ai-communications-platform">Avito</a>, founded <a href="/work/boxr">BOXR</a> (a consumer AI coaching app), product &amp; strategy at <a href="/work/vk-smart-speakers">VK</a>, strategy consulting at EY-Parthenon'
+  - label: Studied
+    html: 'MBA, London Business School'
+  - label: Writing
+    html: 'I write about AI/ML &amp; product on <a href="https://hackernoon.com/u/dzhurba" target="_blank" rel="noopener">HackerNoon</a>'
+selected_writing:
+  - hn-buyer-engagement
+  - hn-health-fitness
+  - sostav-pm-skills
+play:
+  - title: "CRM in 2026"
+    desc: "An explorable article — poke the charts, run the simulator."
+    href: /read/ai-ml-crm-2026/
+  - title: "Run the Comms Stack"
+    desc: "A playable model of an AI comms engine — see if you can beat the machine."
+    href: /read/run-the-comms-stack/
+about: "Nine years building AI/ML products — 0→1 to 100M+ users — and the teams and strategy behind them."
 ctas:
-  - { label: Read the writing, href: /writing }
-  - { label: See the work, href: /work }
-  - { label: Download CV, href: /cv.pdf }
-credibility_strip:
-  - { label: "Best Tech Innovation — LBS Launchpad", href: "TODO-award-link" }
-  - { label: "Best AI Startups to Watch — HYPE Awards", href: "TODO-list-link" }
-  - { label: "Authored PM course — Netology (600k+ learners)", href: "TODO-course-link" }
-  - { label: "Invited expert — Eurasian Business Conference, London", href: "https://www.eurasianconf.com/ebc-startup" }
-  - { label: "Top Free & Top Grossing, Health — BOXR", href: "TODO-store-screenshot" }
-featured_writing:
-  - communications-investment-case
-featured_work:
-  - ai-communications-platform
-  - vk-smart-speakers
-  - boxr
+  - { label: "See the work", href: /work }
+  - { label: "Read the writing", href: /writing }
+  - { label: "CV", href: /cv }
 ---
 
-# Denis Zhurba
-
-Product leader building AI/ML products at scale — from communications systems at a 60M-user marketplace to a top-ranked AI sports-coaching app.
-
-Nine years shipping and scaling products: communications and buyer-engagement systems at one of the world's largest online marketplaces, AI voice and smart-speaker products at VK, and BOXR, an AI sports-coaching app I founded and exited.
+Denis Zhurba — AI/ML product leader.
