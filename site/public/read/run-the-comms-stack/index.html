@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run the Comms Stack — can you beat the machine?</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --card:#fff; --ink:#1a1d23; --muted:#6b7280;
+    --accent:#4f46e5; --accent-soft:#eef2ff; --good:#059669; --good-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --bad:#dc2626; --bad-soft:#fef2f2;
+    --border:#e5e7eb; --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.55; padding:24px 16px 64px;}
+  .wrap{max-width:800px; margin:0 auto;}
+  header{text-align:center; margin-bottom:18px;}
+  header h1{font-size:1.7rem; letter-spacing:-.02em;}
+  header p{color:var(--muted); margin-top:6px; font-size:.96rem;}
+  .pill{display:inline-block; background:var(--accent-soft); color:var(--accent);
+    font-size:.74rem; font-weight:600; padding:3px 10px; border-radius:99px; margin-bottom:10px;
+    text-transform:uppercase; letter-spacing:.06em;}
+  .roundbanner{background:var(--ink); color:#fff; border-radius:10px; padding:8px 14px;
+    font-size:.85rem; font-weight:600; margin-bottom:14px; text-align:center;}
+  .progress{display:flex; gap:6px; margin:14px 0 18px;}
+  .progress div{flex:1; height:6px; border-radius:3px; background:var(--border); transition:background .3s;}
+  .progress div.done{background:var(--accent);}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px; margin-bottom:16px;}
+  .persona{display:flex; gap:14px; align-items:flex-start;}
+  .avatar{width:46px; height:46px; border-radius:50%; background:var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.1rem; flex-shrink:0;}
+  .persona h3{font-size:1rem;}
+  .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .tag{font-size:.78rem; background:var(--bg); border:1px solid var(--border);
+    padding:2px 9px; border-radius:99px; color:#374151;}
+  .tag.hot{background:var(--warn-soft); border-color:#fcd34d; color:#92400e;}
+  .tag.cold{background:#eff6ff; border-color:#bfdbfe; color:#1e40af;}
+  .meter{margin-top:10px; font-size:.8rem; color:var(--muted);}
+  .meter-bar{height:8px; border-radius:4px; background:var(--border); overflow:hidden; margin-top:4px;}
+  .meter-fill{height:100%; background:linear-gradient(90deg,#fbbf24,#f59e0b); border-radius:4px; transition:width .5s;}
+  h2.stage-title{font-size:1.2rem; margin-bottom:4px;}
+  .stage-sub{color:var(--muted); font-size:.92rem; margin-bottom:14px;}
+  .brief{background:var(--accent-soft); border:1px solid #c7d2fe; border-radius:10px;
+    padding:10px 14px; font-size:.88rem; margin-bottom:14px; color:#3730a3;}
+  .opt{border:1.5px solid var(--border); border-radius:12px; padding:13px 15px; margin-bottom:10px;
+    cursor:pointer; transition:all .15s; position:relative; background:#fff;}
+  .opt:hover{border-color:#a5b4fc;}
+  .opt.sel{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 0 0 1px var(--accent);}
+  .opt .cat{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);}
+  .opt .txt{margin-top:2px; font-size:.96rem;}
+  .opt .sub{font-size:.8rem; color:var(--muted); margin-top:3px;}
+  .opt.locked{opacity:.85; cursor:default;}
+  .opt .lockbadge{position:absolute; top:10px; right:12px; font-size:.7rem; font-weight:700;
+    color:var(--muted); background:var(--bg); padding:2px 8px; border-radius:99px; border:1px solid var(--border);}
+  .timechips{display:flex; gap:6px; margin-top:9px; flex-wrap:wrap;}
+  .chip{font-size:.78rem; border:1px solid var(--border); border-radius:99px; padding:3px 12px;
+    cursor:pointer; background:#fff; color:var(--muted);}
+  .chip.on{background:var(--ink); color:#fff; border-color:var(--ink);}
+  button.primary{display:block; width:100%; padding:13px; border:none; border-radius:12px;
+    background:var(--accent); color:#fff; font-size:1rem; font-weight:600; cursor:pointer; margin-top:6px;}
+  button.primary:disabled{background:#c7cad1; cursor:not-allowed;}
+  button.primary:hover:not(:disabled){background:#4338ca;}
+  button.ghost{display:block; width:100%; padding:12px; border:1.5px solid var(--border); border-radius:12px;
+    background:#fff; color:var(--ink); font-size:.95rem; font-weight:600; cursor:pointer; margin-top:8px;}
+  .feedback{border-radius:12px; padding:15px 17px; margin-top:14px; font-size:.92rem; display:none;}
+  .feedback.show{display:block; animation:pop .25s ease;}
+  .feedback.good{background:var(--good-soft); border:1px solid #a7f3d0;}
+  .feedback.warn{background:var(--warn-soft); border:1px solid #fde68a;}
+  .feedback.bad{background:var(--bad-soft); border:1px solid #fecaca;}
+  .feedback h4{font-size:.95rem; margin-bottom:6px;}
+  .feedback .pts{float:right; font-weight:800; font-size:1.05rem;}
+  .kv{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; font-size:.83rem;}
+  .kv span b{display:block; font-size:1rem;}
+  @keyframes pop{from{transform:translateY(6px); opacity:0;} to{transform:none; opacity:1;}}
+  .hidden{display:none;}
+  .composer{border:1.5px dashed #a5b4fc; border-radius:12px; padding:13px 15px; margin:4px 0 10px; background:#fafbff;}
+  .composer textarea{width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 11px;
+    font:inherit; font-size:.93rem; resize:vertical; min-height:46px; margin-top:8px;}
+  .composer .hint{font-size:.78rem; color:var(--muted); margin-top:5px;}
+  table.bd{width:100%; border-collapse:collapse; font-size:.82rem; margin-top:10px;}
+  table.bd td{padding:5px 8px; border-bottom:1px solid var(--border); vertical-align:top;}
+  table.bd td:nth-child(2){text-align:right; font-weight:700; white-space:nowrap;}
+  .ranker{background:#fafbff; border:1.5px solid #c7d2fe; border-radius:12px; padding:14px 16px; margin-bottom:14px;}
+  .ranker h4{font-size:.92rem; margin-bottom:2px;}
+  .ranker .sect{font-size:.74rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:10px 0 6px;}
+  .ranker .legacy{font-size:.78rem; color:var(--warn); font-weight:600; margin-bottom:10px;}
+  .wrow{display:grid; grid-template-columns:175px 1fr 30px; gap:10px; align-items:center; margin-bottom:7px;}
+  .wrow label{font-size:.84rem; font-weight:600;}
+  .wrow label small{display:block; font-weight:400; color:var(--muted); font-size:.73rem; line-height:1.3;}
+  .wrow input[type=range]{width:100%; accent-color:var(--accent);}
+  .wrow .wval{font-weight:800; text-align:center; font-size:.95rem;}
+  .ritem{display:flex; gap:10px; align-items:flex-start; border:1.5px solid var(--border); border-radius:10px;
+    padding:9px 12px; margin-bottom:7px; background:#fff; transition:all .2s;}
+  .ritem.top{border-color:var(--accent); background:var(--accent-soft);}
+  .ritem .rank{font-weight:800; font-size:.95rem; width:26px; flex-shrink:0; color:var(--muted);}
+  .ritem.top .rank{color:var(--accent);}
+  .ritem .body{flex:1;}
+  .ritem .nm{font-size:.9rem;}
+  .ritem .durtag{font-size:.72rem; color:var(--muted); font-style:italic;}
+  .ritem .fchips{display:flex; flex-wrap:wrap; gap:4px; margin-top:4px;}
+  .fchip{font-size:.68rem; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:1px 6px; color:#4b5563;}
+  .fchip.cl{background:#f5f3ff; border-color:#ddd6fe; color:#5b21b6; font-weight:700;}
+  .ritem .rscore{font-weight:800; font-size:.95rem; flex-shrink:0; text-align:right;}
+  .ritem .rscore small{display:block; font-weight:600; color:var(--warn); font-size:.68rem;}
+  .ritem .truth{font-size:.78rem; font-weight:700; margin-top:3px;}
+  .truth.hi{color:var(--good);} .truth.lo{color:var(--bad);} .truth.md{color:var(--warn);}
+  .scorerow{margin-bottom:13px;}
+  .scorerow .lbl{display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:4px;}
+  .bar{height:10px; border-radius:5px; background:var(--border); overflow:hidden; margin-bottom:4px;}
+  .bar i{display:block; height:100%; border-radius:5px; width:0; transition:width .8s ease;}
+  .bar.you i{background:var(--accent);}
+  .bar.ml i{background:#9ca3af;}
+  .verdict{font-size:1.25rem; font-weight:700; text-align:center; margin:10px 0 4px;}
+  .verdict-sub{text-align:center; color:var(--muted); font-size:.92rem; margin-bottom:10px;}
+  table.map{width:100%; border-collapse:collapse; font-size:.85rem; margin-top:10px;}
+  table.map td, table.map th{padding:8px 10px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top;}
+  table.map th{color:var(--muted); font-weight:600; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em;}
+  .traps{margin-top:14px;}
+  .traps .trap{border-left:3px solid var(--bad); background:var(--bad-soft); border-radius:0 10px 10px 0;
+    padding:9px 13px; font-size:.87rem; margin-bottom:8px;}
+  .traps .clean{border-left:3px solid var(--good); background:var(--good-soft); border-radius:0 10px 10px 0;
+    padding:9px 13px; font-size:.87rem; margin-bottom:8px;}
+  details.about{margin-top:16px; font-size:.86rem; color:#374151;}
+  details.about summary{cursor:pointer; font-weight:600; color:var(--accent);}
+  details.about .inner{margin-top:8px; padding:12px 14px; background:var(--bg); border-radius:10px;}
+  .cta{text-align:center; margin-top:18px; font-size:.92rem; color:var(--muted);}
+  .footer-note{text-align:center; color:var(--muted); font-size:.78rem; margin-top:26px;}
+  /* week sim */
+  .daycard{border:1.5px solid var(--border); border-radius:12px; padding:13px 15px; margin-bottom:12px; background:#fff;}
+  .daycard h4{font-size:.95rem; display:flex; justify-content:space-between;}
+  .daycard h4 .daynote{font-weight:600; color:var(--warn); font-size:.78rem;}
+  .daycard .dstate{font-size:.78rem; color:var(--muted); margin:3px 0 8px;}
+  .cand{display:flex; gap:8px; align-items:flex-start; padding:6px 0; border-top:1px dashed var(--border); font-size:.86rem;}
+  .cand .ev{flex-shrink:0; font-weight:800; width:46px; text-align:right;}
+  .cand .ev small{display:block; font-weight:600; color:var(--warn); font-size:.66rem;}
+  .cand .ctext{flex:1;}
+  .cand .outcome{font-size:.78rem; color:var(--muted); margin-top:2px;}
+  .badge{flex-shrink:0; font-size:.7rem; font-weight:800; padding:2px 8px; border-radius:6px; letter-spacing:.03em;}
+  .badge.sent{background:var(--good-soft); color:var(--good); border:1px solid #a7f3d0;}
+  .badge.held{background:var(--bg); color:var(--muted); border:1px solid var(--border);}
+  .badge.inbox{background:var(--accent-soft); color:var(--accent); border:1px solid #c7d2fe;}
+  .badge.bad{background:var(--bad-soft); color:var(--bad); border:1px solid #fecaca;}
+  .dayfoot{display:flex; justify-content:space-between; font-size:.8rem; color:var(--muted); border-top:1px solid var(--border); padding-top:7px; margin-top:6px;}
+  .dayfoot b{color:var(--ink);}
+  .urbanner{background:var(--bad-soft); border:1.5px solid #fecaca; color:#7f1d1d; border-radius:10px; padding:9px 13px; font-size:.86rem; font-weight:600; margin-top:8px;}
+  .knobrow{margin-bottom:12px;}
+  .knobrow .klabel{font-size:.86rem; font-weight:600;}
+  .knobrow .klabel small{display:block; font-weight:400; color:var(--muted); font-size:.75rem;}
+  .weekchart{display:flex; gap:8px; align-items:flex-end; height:90px; margin:12px 0 4px; padding:0 4px;}
+  .wday{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; font-size:.68rem; color:var(--muted);}
+  .wbars{display:flex; gap:2px; align-items:flex-end; height:62px;}
+  .wbars i{width:10px; border-radius:2px 2px 0 0; display:block;}
+  .wbars .bs{background:var(--accent);}
+  .wbars .bf{background:#f59e0b;}
+  @media(max-width:560px){ .wrow{grid-template-columns:130px 1fr 24px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p style="margin:0 0 14px"><a href="/" style="color:var(--accent);font-size:.85rem;text-decoration:none">← plsfix.co.uk</a></p>
+  <header>
+    <div class="pill">Prototype v0.8 · interactive companion</div>
+    <h1>Run the Comms Stack</h1>
+    <p><b>Day 1:</b> you make the calls — copy, ranker, send decisions. <b>Days 2–7:</b> your choices become the policy, and you watch the system run it.<br><b>The goal:</b> maximize incremental purchases for the week. <b>The constraint:</b> weekly unsubscribe rate stays under 1.00%. More aggression, more uplift — cross the line, game over.</p>
+  </header>
+
+  <div class="roundbanner" id="roundbanner"></div>
+  <div class="progress" id="progress"><div></div><div></div><div></div><div></div><div></div></div>
+
+  <div class="card" id="personaCard"></div>
+
+  <div class="card" id="stage1">
+    <h2 class="stage-title">Stage 1 · Write the comm</h2>
+    <p class="stage-sub" id="s1sub"></p>
+    <div class="brief" id="s1brief"></div>
+    <div id="s1opts"></div>
+    <div class="composer">
+      <b style="font-size:.9rem">✍️ Think you can beat the pool?</b>
+      <textarea id="composerText" maxlength="140" placeholder="Write your own push (max 140 chars)…"></textarea>
+      <div class="hint">Scored live by the same reward model — feature breakdown included.</div>
+      <button class="ghost" id="composerBtn">Score my copy</button>
+      <div class="feedback" id="composerFb"></div>
+    </div>
+    <button class="primary" id="s1btn" disabled>Lock it in</button>
+    <div class="feedback" id="s1fb"></div>
+    <button class="primary hidden" id="s1next">Next: tune the ranker →</button>
+  </div>
+
+  <div class="card hidden" id="stage2">
+    <h2 class="stage-title">Stage 2 · Tune the ranker & blend the slate</h2>
+    <p class="stage-sub" id="s2sub"></p>
+    <div class="ranker">
+      <h4>Ranking policy</h4>
+      <div class="legacy" id="legacyNote"></div>
+      <div class="sect">Relevance features</div>
+      <div id="sliders"></div>
+      <div class="sect">Slate blender</div>
+      <div id="divslider"></div>
+    </div>
+    <div id="ranklist"></div>
+    <button class="primary" id="s2btn">Commit the top 3</button>
+    <div class="feedback" id="s2fb"></div>
+    <button class="primary hidden" id="s2next">Next: balance the day →</button>
+  </div>
+
+  <div class="card hidden" id="stage3">
+    <h2 class="stage-title">Stage 3 · Balance the day</h2>
+    <p class="stage-sub" id="s3sub"></p>
+    <div id="s3opts"></div>
+    <button class="primary" id="s3btn">Run the day</button>
+    <div class="feedback" id="s3fb"></div>
+    <button class="primary hidden" id="s3next">Day 1 done — configure the autopilot →</button>
+  </div>
+
+  <div class="card hidden" id="autopilot">
+    <h2 class="stage-title">Set the autopilot</h2>
+    <p class="stage-sub">Day 1 is over. From tomorrow, the system makes these calls — your header is the champion copy, your ranker weights persist, and three knobs define the orchestration policy. The scoreboard is simple: <b>every send banks uplift; every send spends unsubscribe budget</b> — faster when she’s fatigued, double for junk. The week ends at 1.00% UR, wherever you are.</p>
+    <div class="ranker" id="knobs"></div>
+    <button class="primary" id="apLaunch">Launch the autopilot →</button>
+  </div>
+
+  <div class="card hidden" id="simcard">
+    <h2 class="stage-title">Days 2–7 · The system runs your policy</h2>
+    <p class="stage-sub">Each day a candidate queue arrives. The scoring filter asks its one question per candidate — <i>does this deserve a slot now?</i> — under your threshold, your cap, your routing. Watch two numbers: banked uplift, and the UR meter crawling toward 1.00%.</p>
+    <div id="simdays"></div>
+    <div id="retunePanel" class="ranker hidden"></div>
+    <button class="primary" id="simNext">Advance to Day 2 →</button>
+  </div>
+
+  <div class="card hidden" id="results">
+    <h2 class="stage-title" style="text-align:center">Scoreboard</h2>
+    <div class="verdict" id="verdict"></div>
+    <div class="verdict-sub" id="verdictSub"></div>
+    <div id="scorebars"></div>
+    <div id="weekDebrief"></div>
+    <div class="traps" id="trapReport"></div>
+    <div id="finalExtras">
+      <h2 class="stage-title" style="margin-top:20px">What you just did, in production terms</h2>
+      <table class="map">
+        <tr><th>Your decision</th><th>The model that makes it at scale</th></tr>
+        <tr><td>Picked copy against the brief; the overclaim and the creepy variant were blocked</td><td><b>Pairwise reward model</b> (selection-only, no RL on raw CTR) + <b>judge model</b> for factual grounding <i>and</i> brand guardrails</td></tr>
+        <tr><td>Split interest into long-term profile vs short-term intent, and weighted them per user state</td><td><b>Two-tower interest models</b> — a durable user embedding + a session-intent model, blended by the ranker with learned decay per interest type</td></tr>
+        <tr><td>Turned on diversity demotion so one intent couldn’t monopolize the slate</td><td><b>MMR-style blender / slate optimization</b> — value lives in the slate, not the item; the second bike ad is worth a third of the first</td></tr>
+        <tr><td>Weighted recency, replenishment and intent over raw CTR</td><td><b>Uplift head</b> — you hand-built one. Production learns those weights from randomized experiments (CATE, Qini)</td></tr>
+        <tr><td>Held sends under fatigue; switched channels when push died; let good candidates lose the auction</td><td><b>Per-user budget + send/no-send filter + send-time optimization + channel cascade</b></td></tr>
+        <tr><td>Set three knobs on Day 1, then watched six days run without you</td><td>That’s the actual job. Production teams don’t make send decisions — they design the <b>policy</b> (thresholds, budgets, routing) and audit what it did. The week is where wear-out, fatigue debt and expiring intents live; no single day can show them.</td></tr>
+        <tr><td>Collected points per stage</td><td>Production scores the same way: incremental uplift decomposes into <b>three levers — daily frequency × open rate × open-to-conversion</b> — on constant reach, discounted by measured incrementality (~0.2). Every mechanic you just used maps to exactly one lever; a roadmap that can’t name its lever can’t be priced.</td></tr>
+      </table>
+      <details class="about">
+        <summary>About the models in this demo</summary>
+        <div class="inner">
+          The copy scorer is a transparent ~20-feature stand-in for a production pairwise reward model (a 100–300M-parameter encoder trained on millions of A/B comparisons). The item ranker is a real linear ranker — score = Σ weight × feature over long-term interest, short-term intent, CTR, popularity, replenishment and price — and the blender is a real greedy MMR pass with same-cluster demotion. That’s the exact shape production stacks had before gradient boosting and neural rankers, and the lesson survives the upgrade: <b>the features you weight are the policy, and the slate — not the item — is the unit of value.</b> Why a pre-launch reward model instead of just A/B-ing headers? Because post-launch CTR is delayed and noisy on fresh variants with small denominators — it caps how fast the content pool can compound and how fast you respond to wear-out. Roadmap: live LLM generation + LLM judge (tier 2), then a pairwise model trained on players’ choices (tier 3).
+        </div>
+      </details>
+      <p class="cta">A production stack plays this game ~5 billion times a month. The full investment case — returns, costs, and whether your platform clears the bar — is in the article. <b>→ [link to article]</b></p>
+    </div>
+    <button class="primary" onclick="location.reload()" style="margin-top:14px">Play again</button>
+  </div>
+
+  <p class="footer-note">© Denis Zhurba · prototype v0.8 · numbers are illustrative, mechanics are real</p>
+</div>
+
+<script>
+/* ============ REWARD MODEL (tier 1) ============ */
+function scoreHeadline(text, ctx){
+  const t = text.toLowerCase();
+  let rm = 4.0, ctrBoost = 0, complaint = 0, breakdown = [];
+  let judge = {pass:true, reason:''};
+  const overclaim = /(\d+\s*%|% ?off|free|sale|today only|last chance|everything must go)/i;
+  if(overclaim.test(text) && !ctx.discountRunning){
+    judge = {pass:false, reason:'Claim not in the brief: no discount is running. Blocked before send.'};
+    breakdown.push(['🚫 Ungrounded claim','judge FAIL','Discount language with no offer in the brief — the PushGen guardrail, literally.']);
+  }
+  const priceClaim = /(€|\$|£)\s?\d+|from \d{3,}/;
+  if(priceClaim.test(text) && !ctx.priceInBrief){
+    judge = {pass:false, reason:'Price not in the brief. Looks specific — and the listing prices aren’t known at send time. Blocked.'};
+    breakdown.push(['🚫 Ungrounded price','judge FAIL','The subtle cousin of the discount overclaim: calm, specific-looking, and unverifiable against the brief.']);
+  }
+  const creepy = /(we noticed|we saw you|you were looking at|you looked at|watching you)/i;
+  if(creepy.test(text)){
+    judge = {pass:false, reason:'Brand guardrail: surveillance framing. Factually true ≠ sendable.'};
+    breakdown.push(['🚫 Creepy framing','judge FAIL','Quoting browsing history back at the user passes the fact-check and fails the brand check.']);
+  }
+  let spec = 0;
+  ctx.specTokens.forEach(k=>{ if(t.includes(k)) spec++; });
+  if(/\d/.test(t)) spec++;
+  if(spec>=3){ rm+=2.6; breakdown.push(['Specificity','+2.6','Named product / counts / proximity.']); }
+  else if(spec===2){ rm+=1.7; breakdown.push(['Specificity','+1.7','Some concrete detail.']); }
+  else if(spec===1){ rm+=0.8; breakdown.push(['Specificity','+0.8','Light on detail.']); }
+  else { rm-=0.5; breakdown.push(['Specificity','−0.5','Generic — the decay curve eats this first.']); }
+  let intent = 0;
+  ctx.intentTokens.forEach(k=>{ if(t.includes(k)) intent++; });
+  if(intent>=2){ rm+=1.8; breakdown.push(['Intent match','+1.8','Maps to live signals.']); }
+  else if(intent===1){ rm+=1.0; breakdown.push(['Intent match','+1.0','Partial signal match.']); }
+  let stale = false;
+  ctx.staleTokens.forEach(k=>{ if(t.includes(k)) stale=true; });
+  if(stale){ rm-=1.8; breakdown.push(['Stale intent','−1.8','Months-old, out-of-season signal. Recency beats frequency.']); }
+  const emo = /(miss you|come back|been a while|a lot has changed)/i.test(text);
+  if(emo && ctx.mode==='dormant'){ rm+=1.6; breakdown.push(['Win-back tone','+1.6','Right register for a 47-day-dormant user.']); }
+  if(emo && ctx.mode==='active'){ rm-=1.6; breakdown.push(['Win-back tone','−1.6','“We miss you” to someone here yesterday.']); }
+  let cb = 0;
+  if(/🔥|‼|⚡/.test(text)) cb++;
+  if(/[A-ZА-Я]{4,}/.test(text.replace(/[^A-ZА-Яa-zа-я ]/g,''))) cb++;
+  if((text.match(/!/g)||[]).length>=2) cb++;
+  if(/(hurry|don.t miss|now or never|today only)/i.test(text)) cb++;
+  if(cb>0){ ctrBoost+=cb*1.6; complaint+=cb;
+    breakdown.push(['Clickbait pressure','CTR +'+(cb*1.6).toFixed(1)+' / complaints ↑','Clicks now, complaints and unsubscribes later.']);
+    rm-=cb*0.7; }
+  const nameCount = (t.match(new RegExp(ctx.name.toLowerCase(),'g'))||[]).length;
+  if(nameCount===1){ rm+=0.4; breakdown.push(['Name use','+0.4','Once is personal.']); }
+  if(nameCount>1){ rm-=0.6; breakdown.push(['Name use','−0.6','Twice is a mail merge.']); }
+  if(text.length>=30 && text.length<=90){ rm+=0.5; breakdown.push(['Length','+0.5', text.length+' chars — fits the lockscreen.']); }
+  else if(text.length>90){ rm-=0.6; breakdown.push(['Length','−0.6','Truncated on most lockscreens.']); }
+  else { rm-=0.3; breakdown.push(['Length','−0.3','Too short to carry the payload.']); }
+  rm = Math.max(1, Math.min(9.8, rm));
+  const ctr = Math.max(1.5, Math.min(14, rm*1.05 + ctrBoost)).toFixed(1);
+  const compLabel = complaint>=2 ? 'high' : complaint===1 ? 'medium' : 'low';
+  let pts = judge.pass ? Math.round(rm/9.0*30) : 0;
+  return {rm:rm.toFixed(1), ctr, complaint:compLabel, judge, breakdown, pts:Math.max(0,Math.min(30,pts))};
+}
+
+/* ============ RANKER FEATURES ============ */
+const FEATURES = [
+  {id:'lt',  label:'Long-term interest',  desc:'Durable profile match: cat owner, cyclist, car owner — survives months of silence'},
+  {id:'st',  label:'Short-term intent',   desc:'Live episodic signals from recent sessions — the sofa hunt, the search spike'},
+  {id:'ctr', label:'Predicted CTR',       desc:'The engagement model’s click forecast'},
+  {id:'pop', label:'Popularity',          desc:'Platform-wide clicks on this item'},
+  {id:'rep', label:'Replenishment due',   desc:'Consumable the user is statistically about to need again'},
+  {id:'pr',  label:'Price point',         desc:'Bias toward big-ticket items (GMV optics)'}
+];
+const CANNIBAL = [1, 0.3, 0.1];   // value multiplier for 1st/2nd/3rd same-cluster item in the slate
+const BUDGET_OPTIONS = [4, 6, 8]; // selectable model capacity (total relevance weight points)
+function randomConfig(cap){       // the inherited config: full budget, spent at random
+  const w = {lt:0, st:0, ctr:0, pop:0, rep:0, pr:0};
+  const ids = Object.keys(w);
+  let left = cap, guard = 200;
+  while(left>0 && guard--){
+    const id = ids[Math.floor(Math.random()*ids.length)];
+    if(w[id]<3){ w[id]++; left--; }
+  }
+  return w;
+}
+function weightSum(w){ return Object.values(w).reduce((a,b)=>a+b,0); }
+
+/* ============ ROUND DATA ============ */
+const ROUNDS = [
+{ // ---- ROUND 1: MARIA ----
+  banner:'Day 1 · Maria — one user, four competing intents',
+  persona:`<div class="persona"><div class="avatar">M</div><div>
+    <h3>Maria, 32 — active buyer with a life going on</h3>
+    <div class="tags">
+      <span class="tag hot">🚴 cyclist (durable hobby) — saved search “Canyon road bike”, browsed ×6 this week</span>
+      <span class="tag hot">🛋 moving flats June 1 — sofa hunt all week (temporary intent)</span>
+      <span class="tag hot">🐈 cat owner, 6 years — litter every ~6 wks, last bought 5 wks ago (durable need)</span>
+      <span class="tag">🎮 browsed PS5 once, 3 weeks ago (impulse)</span>
+      <span class="tag">🪖 bought bike helmet, €85 — last month</span>
+      <span class="tag">opens pushes 19:00–22:00 · yesterday: 3 pushes, 2 ignored</span>
+    </div>
+    <div class="meter">Attention budget · unsubscribe safe-zone &lt;1%<div class="meter-bar"><div class="meter-fill" id="fatigue" style="width:62%"></div></div></div>
+  </div></div>`,
+  fatigueStart:62,
+  ctx:{ name:'Maria', mode:'active', discountRunning:false,
+    specTokens:['canyon','road bike','listing','12 km','km','today','size'],
+    intentTokens:['canyon','road bike','saved search','ride'],
+    staleTokens:[] },
+  s1sub:'Tonight’s slot belongs to the bike campaign. Seven variants from the generation model — several look reasonable; the reward model and the judge disagree. Pick one, or write your own.',
+  s1brief:'📋 <b>Campaign brief:</b> 3 new listings today match Maria’s saved search “Canyon road bike”. One is 12 km away. No discounts are running. Tone: helpful, specific.',
+  s1variants:[
+    {cat:'Variant A · plot', txt:'Your next ride just appeared: Canyon Ultimate, size 56 — 12 km away, listed 3h ago'},
+    {cat:'Variant B · practical', txt:'3 new Canyon road bike listings match your saved search today'},
+    {cat:'Variant C · personal', txt:'Maria, a Canyon just listed near you — worth a look?'},
+    {cat:'Variant D · practical', txt:'Canyon road bikes from €999 — new listings near you'},
+    {cat:'Variant E · urgency', txt:'New Canyon listings near you — they go fast, don’t miss out'},
+    {cat:'Variant F · emotion', txt:'We miss you, Maria 💔 Come back and see what’s new'},
+    {cat:'Variant G · suspense', txt:'Something’s waiting in your saved search…'},
+    {cat:'Variant H · generic', txt:'Come and take a look 💫'}
+  ],
+  s2sub:'The landing has <b>3 featured slots</b> and Maria has four live intents competing for them. Set the relevance weights — then decide how much the <b>blender</b> may demote same-intent repeats. Watch what happens to the slate when diversity is 0.',
+  mls2:37,
+  s2items:[
+    {nm:'🚴 Canyon Ultimate CF SL, size 56 — €2,350 · 12 km · listed 3h ago', dur:'durable hobby, hot signal', cluster:'bike', f:{lt:7,st:9,ctr:7,pop:5,rep:0,pr:8}, truth:14, note:'Sharpest intent, freshest signal.'},
+    {nm:'🛋 3-seater sofa, grey — €450 · new-flat browse, all week', dur:'temporary — expires after June 1', cluster:'home', f:{lt:1,st:9,ctr:5,pop:6,rep:0,pr:7}, truth:11, note:'The life event. No long-term furniture profile — short-term intent is all it has, and it’s enough.'},
+    {nm:'🐈 Cat litter 12 kg — €14 · buys every ~6 weeks, week 5 now', dur:'durable need · periodic', cluster:'pet', f:{lt:9,st:2,ctr:4,pop:3,rep:10,pr:2}, truth:12, note:'Zero recent browsing — the cat doesn’t browse. Durable profile + replenishment clock.'},
+    {nm:'👟 Road cycling shoes, sz 39 — €95', dur:'durable hobby', cluster:'bike', f:{lt:7,st:7,ctr:5,pop:4,rep:0,pr:3}, truth:9, note:'Good complement — but it’s the second bike item in a 3-slot slate.'},
+    {nm:'📟 Garmin Edge 530 — €180', dur:'durable hobby', cluster:'bike', f:{lt:6,st:6,ctr:5,pop:4,rep:0,pr:5}, truth:8, note:'Third bike item. She can only buy one bike this month.'},
+    {nm:'🛏 Sofa cushions set — €25', dur:'temporary', cluster:'home', f:{lt:1,st:6,ctr:3,pop:4,rep:0,pr:1}, truth:5, note:'Adjacent to the sofa intent, low value.'},
+    {nm:'🎮 PS5 + 2 controllers — €430 · browsed once, 3 wks ago', dur:'impulse — decayed', cluster:'console', f:{lt:2,st:3,ctr:8,pop:9,rep:0,pr:7}, truth:4, trap:'engagementTrap', note:'One late-evening browse ≠ intent. High CTR, thin causal value.'},
+    {nm:'📱 iPhone 15 Pro — €780 · 1,200 clicks today', dur:'—', cluster:'phone', f:{lt:2,st:1,ctr:9,pop:10,rep:0,pr:8}, truth:2, trap:'engagementTrap', note:'The engagement trap. Everyone clicks; almost nobody buys because of the slot.'},
+    {nm:'🪖 POC Ventral helmet — €160 · top rated', dur:'durable interest, need completed', cluster:'bike', f:{lt:8,st:5,ctr:7,pop:6,rep:0,pr:5}, truth:2, trap:'alwaysTaker', note:'Long-term interest loves it — she IS a cyclist. But she bought a helmet last month.'},
+    {nm:'🛹 Electric skateboard — €390 · trending', dur:'—', cluster:'trend', f:{lt:1,st:1,ctr:6,pop:7,rep:0,pr:6}, truth:1, note:'Trending ≠ relevant.'}
+  ],
+  s2lesson:'At a typical marketplace, roughly 4 in 10 campaign sends don’t match the user’s top-3 interests — this stage is where that number is made. Three lessons in one slate. <b>Long-term vs short-term:</b> the litter has no recent signal (durable profiles don’t browse) and the sofa has no durable profile (life events are temporary) — you needed both features weighted to see both. <b>The blender:</b> with diversity at 0, the bike cluster monopolizes the slots, and the 2nd and 3rd bike items are worth 30% and 10% of face value — she buys one bike, not three. <b>And CTR</b> still votes for consoles. The optimal policy here is a hand-built uplift model with a slate constraint — exactly the ranker + diversity-demotion pair production runs.',
+  s3sub:'Every team wants Maria tonight — and three of the candidates are genuinely good. The platform recently moved from a static cap of 4 campaigns/day to per-user limits modeled on engagement, fatigue signals and channel responsiveness — and her signals say she’s near the edge: 3 pushes yesterday, 2 ignored. For each candidate, the scoring filter asks one question: <b>does this campaign deserve a slot now?</b>',
+  deadPush:false,
+  s3candidates:[
+    {txt:'🧾 Receipt — helmet warranty renewal', sub:'Transactional · always delivered, but it routes through the balancer like everything else — global limits can’t work on volume they can’t see', locked:true},
+    {txt:'📬 Your bike comm (Stages 1–2 landing)', sub:'Your candidate', pts:{pm:8,pe:16,em:5,ee:10,in:4},
+      whyBest:'Right send, right channel, right window (she opens pushes 19:00–22:00).', whyM:'Right send — but STO and channel fit are the cheapest lift in the stack.', whyInbox:'Safe, but this one earned an interruption.'},
+    {txt:'🛋 Furniture campaign — “12 sofas under €500 near you”', sub:'Her other live intent. Also genuinely good.', pts:{pm:7,pe:13,em:5,ee:9,in:4},
+      whyBest:'Real intent, real value — worth one of tonight’s two send slots.', whyM:'Right campaign, weaker channel or window.', whyInbox:'Parks a live intent on a passive surface — defensible, not optimal.'},
+    {txt:'📉 Price drop: “Your favorited jersey is €12 cheaper than when you saved it”', sub:'Fresh trigger on explicit signal — note the copy names the item and the delta, not “a price dropped 💫”', pts:{pm:7,pe:12,em:4,ee:8,in:4},
+      whyBest:'High-signal trigger, correctly timed.', whyM:'Good trigger, suboptimal channel/window.', whyInbox:'Survives in the inbox, but triggers age fast.'},
+    {txt:'📢 Sitewide promo blast — “10% off fees” (another team)', sub:'Generic reach campaign — until last quarter this stream bypassed the balancer entirely as unmanaged volume', pts:{pm:-6,pe:-6,em:-4,ee:-4,in:0},
+      whyNeg:'Low marginal value against her fatigue. Holding the other team’s blast is the political fight the balancer exists to win — unmanaged volume is how UR budgets die.', whyInbox:'Costs nothing there — which is exactly what it’s worth.'},
+    {txt:'😴 Re-engagement campaign — “It’s been a while!”', sub:'Lifecycle template', pts:{pm:-8,pe:-8,em:-8,ee:-8,in:-2}, trap:'wrongLifecycle',
+      whyNeg:'She was active yesterday — the segment refresh lags. Real-time suppression exists for exactly this send.', whyInbox:'Wrong segment is wrong on every surface.'},
+    {txt:'📰 Weekly digest', sub:'Low-urgency roundup', pts:{pm:-3,pe:-3,em:1,ee:1,in:3},
+      whyBest:'Value without the interruption — the inbox is where low-urgency comms belong.', whyInbox:'Value without the interruption — the inbox is where low-urgency comms belong.', whyM:'Tolerable by email; still not worth a push.', whyNeg:'A roundup push against an elevated fatigue meter buys little.'}
+  ],
+  s3penalty3:-13,
+  s3policyNote:'The production policy sent two: your bike push and the sofa campaign, both at 20:00 — and routed the digest to the notification center. The jersey price-drop lost the budget auction by one point of EV; it goes tomorrow morning. Good candidates losing <i>today’s</i> auction is the system working: the scoring filter’s 5–10% volume headroom is exactly what lets total sendings grow later without breaking the <1% unsubscribe safe-zone.',
+  mlPolicy:{s3:32}
+},
+{ // ---- ROUND 2: DMITRI ----
+  banner:'Round 2 of 2 · Dmitri — the dormant user (every answer flips)',
+  persona:`<div class="persona"><div class="avatar" style="background:#0e7490">D</div><div>
+    <h3>Dmitri, 41 — lapsing but valuable</h3>
+    <div class="tags">
+      <span class="tag cold">⏳ last session: 47 days ago — short-term signals: none</span>
+      <span class="tag cold">🚫 push permissions: revoked in January</span>
+      <span class="tag">🚗 car owner, 6 yrs on platform (durable profile) · 14 purchases</span>
+      <span class="tag">browsed: winter tires ×6 (Oct), roof box (Nov), child seat (Sep)</span>
+      <span class="tag">wiper blades bought 14 months ago</span>
+      <span class="tag">email opens ~30%, weekends</span>
+    </div>
+    <div class="meter">Attention budget · unsubscribe safe-zone &lt;1%<div class="meter-bar"><div class="meter-fill" id="fatigue" style="width:22%"></div></div></div>
+  </div></div>`,
+  fatigueStart:22,
+  ctx:{ name:'Dmitri', mode:'dormant', discountRunning:false,
+    specTokens:['400','parts','car','wheels','roof','spring','near you','region'],
+    intentTokens:['car','parts','auto'],
+    staleTokens:['winter tires','tires'] },
+  s1sub:'Win-back time. Same generation model, same judge — but the right answer changed with the user. Several of these would clear review at most companies.',
+  s1brief:'📋 <b>Campaign brief:</b> win-back for lapsed auto-category users. 400+ fresh car-parts listings in Dmitri’s region this week (spring inventory). No discount running. Channel: email (push is dead).',
+  s1variants:[
+    {cat:'Variant A · win-back', txt:'A lot has changed since February, Dmitri — 400+ new car parts near you'},
+    {cat:'Variant B · practical', txt:'Spring inventory is in: 400+ parts for your car this week'},
+    {cat:'Variant C · suspense', txt:'Something new is parked in your feed…'},
+    {cat:'Variant D · practical', txt:'Winter tires you viewed are back in stock'},
+    {cat:'Variant E · offer', txt:'Car parts up to 50% off — this weekend only'},
+    {cat:'Variant F · personal', txt:'We noticed you were looking at child seats in September. Still need one?'},
+    {cat:'Variant G · generic', txt:'Check out new listings'}
+  ],
+  s2sub:'Same ranker, new user — and here’s the flip: <b>he has no short-term signals at all</b> (47 days dormant). The slider that won round 1 returns noise now. Rank on what survives silence.',
+  mls2:33,
+  s2items:[
+    {nm:'🛞 Alloy wheel set R17 — €340 · listed this week', dur:'durable profile (car owner)', cluster:'wheels', f:{lt:8,st:2,ctr:6,pop:5,rep:0,pr:6}, truth:13, note:'Fresh spring inventory against a durable profile — the win-back case.'},
+    {nm:'🧳 Roof rack crossbars — €110 · 9 km away', dur:'durable profile, season-right', cluster:'carry', f:{lt:7,st:1,ctr:5,pop:4,rep:0,pr:4}, truth:11, note:'The roof-box interest, season-appropriate now.'},
+    {nm:'🌧 Wiper blades — €18 · bought 14 months ago', dur:'durable need · periodic', cluster:'maint', f:{lt:8,st:0,ctr:3,pop:4,rep:9,pr:1}, truth:9, note:'The replenishment clock again: unglamorous, near-certain.'},
+    {nm:'📷 Dash cam — €75 · evergreen bestseller in auto', dur:'durable profile', cluster:'electronics', f:{lt:6,st:1,ctr:5,pop:6,rep:0,pr:3}, truth:8, note:'Evergreen accessory — safe slot.'},
+    {nm:'🚗 Phone mount — €15', dur:'durable profile', cluster:'electronics', f:{lt:5,st:1,ctr:4,pop:5,rep:0,pr:1}, truth:6, note:'Second electronics item — the blender should notice.'},
+    {nm:'❄️ Winter tires R16 — €120/pc · viewed ×6 in October', dur:'seasonal — window closed', cluster:'wheels', f:{lt:8,st:1,ctr:7,pop:5,rep:0,pr:4}, truth:2, trap:'staleItems', note:'The long-term-interest trap: car owner + 6 views screams relevance. In October. Same cluster as the fresh wheels, too.'},
+    {nm:'👶 Child seat — €140 · viewed in September', dur:'episodic — 7 months old', cluster:'family', f:{lt:3,st:1,ctr:5,pop:4,rep:0,pr:5}, truth:3, note:'Seven-month-old signal, sensitive category.'},
+    {nm:'📱 iPhone 15 Pro — €780 · 1,200 clicks today', dur:'—', cluster:'phone', f:{lt:2,st:1,ctr:9,pop:10,rep:0,pr:8}, truth:2, trap:'engagementTrap', note:'The recurring villain. Still clicky, still not incremental.'},
+    {nm:'🛋 Mid-century sofa — trending', dur:'—', cluster:'home', f:{lt:1,st:1,ctr:4,pop:7,rep:0,pr:5}, truth:0, note:'Still filler.'}
+  ],
+  s2lesson:'The flip, made concrete. <b>Short-term intent found Maria’s sofa; for Dmitri it finds nothing</b> — dormant users have no session signals, so the weight that won round 1 degenerates to a tiebreaker. <b>Long-term interest</b> does the work now — but it also resurrects October’s winter tires, and only the blender (same cluster as the fresh wheels) or the season note saves you. Durable profile + replenishment + diversity: that’s the dormant-user policy.',
+  s3sub:'Dmitri’s day. Almost no fatigue — but no push channel either. The problem isn’t volume now, it’s <b>channel</b>. One good send beats zero (and beats three).',
+  deadPush:true,
+  s3candidates:[
+    {txt:'🧾 Receipt — auto-renewal of his saved card', sub:'Transactional · always delivered', locked:true},
+    {txt:'📧 Your win-back comm (Stages 1–2)', sub:'Your candidate', pts:{pm:-4,pe:-4,em:16,ee:9,in:5},
+      whyBest:'Right channel, right window (morning opener — his opens skew early).', whyM:'Right channel, weaker window.', whyInbox:'He won’t see the inbox until he returns — which is the thing this send exists to cause.'},
+    {txt:'🔔 Digest: “what’s new in auto near you”', sub:'Low-urgency roundup', pts:{pm:-4,pe:-4,em:6,ee:4,in:8},
+      whyBest:'The only surface that survives revoked push — exactly why the inbox is in the architecture.', whyInbox:'The only surface that survives revoked push — exactly why the inbox is in the architecture.', whyM:'Works by email, but burns the second send slot a dormant user barely has.'},
+    {txt:'❄️ Price alert: winter tires he viewed, −15%', sub:'Trigger on his strongest historical signal', pts:{pm:-4,pe:-4,em:-5,ee:-5,in:-1}, trap:'staleItems',
+      whyNeg:'His strongest signal — from October. A stale trigger as one of the first touches in 47 days reads as “we don’t actually know you.”', whyInbox:'Still stale, just quieter.'},
+    {txt:'📢 Sitewide promo blast — “10% off fees” (another team)', sub:'Still wants the whole base', pts:{pm:-4,pe:-4,em:-5,ee:-5,in:0},
+      whyNeg:'A generic blast as his first touch in 47 days defines the relationship as noise.', whyInbox:'Costs nothing there — which is exactly what it’s worth.'}
+  ],
+  s3penalty3:-8,
+  s3policyNote:'The production policy sent one thing: the win-back email, morning slot — and placed the digest in the notification center. Push was never attempted: the cascade knows the channel is dead before spending the slot.',
+  mlPolicy:{s3:24}
+}
+];
+
+/* ============ ENGINE ============ */
+let roundIdx = 0, R = ROUNDS[0];
+let scores = [], traps = [];
+let stageDone = 0, s1sel = null, s1composed = null, weights = {}, divW = 0, budgetCap = 6, s3sel = new Map();
+
+function el(id){ return document.getElementById(id); }
+function setProgress(n){ document.querySelectorAll('#progress div').forEach((d,i)=>d.classList.toggle('done', i<n)); }
+function fbBlock(elm, cls, html){ elm.className='feedback show '+cls; elm.innerHTML=html; }
+function bdTable(b){ return '<table class="bd">'+b.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td style="color:var(--muted)">${x[2]}</td></tr>`).join('')+'</table>'; }
+function rankScore(it){ return FEATURES.reduce((a,f)=>a + (weights[f.id]||0)*it.f[f.id], 0); }
+
+/* greedy slate assembly with same-cluster demotion (MMR-style) */
+function buildSlate(){
+  let pool = R.s2items.map((it,i)=>({...it, idx:i, base:rankScore(it)}));
+  const out=[], counts={};
+  while(pool.length){
+    pool.forEach(p=>{ const c=counts[p.cluster]||0; p.eff = Math.round(p.base * Math.max(0, 1 - 0.25*divW*c) * 10)/10; });
+    pool.sort((a,b)=> b.eff-a.eff || b.f.st-a.f.st || b.f.lt-a.f.lt);
+    const pick = pool.shift(); out.push(pick); counts[pick.cluster]=(counts[pick.cluster]||0)+1;
+  }
+  return out;
+}
+function slateTruth(top3){
+  const counts={}; let total=0; const parts=[];
+  top3.forEach(it=>{
+    const c = counts[it.cluster]||0;
+    const mult = CANNIBAL[Math.min(c,2)];
+    const v = Math.round(it.truth*mult*10)/10;
+    parts.push({...it, mult, v});
+    total += v; counts[it.cluster]=c+1;
+  });
+  return {total: Math.round(total), parts};
+}
+
+function startRound(i){
+  roundIdx = i; R = ROUNDS[i];
+  scores[i] = {s1:0,s2:0,s3:0, mls1:0, mls2:R.mls2, mls3:R.mlPolicy.s3};
+  stageDone=0; s1sel=null; s1composed=null; s3sel=new Map();
+  budgetCap = 6; weights = randomConfig(budgetCap); R.initialW = {...weights}; divW = 0;
+  el('roundbanner').textContent = R.banner;
+  el('personaCard').innerHTML = R.persona;
+  setProgress(1);
+  el('s1sub').innerHTML = R.s1sub; el('s1brief').innerHTML = R.s1brief;
+  R.scored = R.s1variants.map(v=>({...v, ...scoreHeadline(v.txt, R.ctx)}));
+  R.scored.sort(()=>Math.random()-0.5);   // pool order never telegraphs quality
+  scores[i].mls1 = Math.max(...R.scored.map(v=>v.pts));
+  el('s1opts').innerHTML='';
+  R.scored.forEach((o,idx)=>{
+    const d=document.createElement('div'); d.className='opt';
+    d.innerHTML=`<div class="cat">${o.cat}</div><div class="txt">${o.txt}</div>`;
+    d.onclick=()=>{ if(stageDone>0) return; s1sel=idx; s1composed=null;
+      document.querySelectorAll('#s1opts .opt').forEach(e=>e.classList.remove('sel'));
+      d.classList.add('sel'); el('s1btn').disabled=false; };
+    el('s1opts').appendChild(d);
+  });
+  ['s1fb','composerFb','s2fb','s3fb'].forEach(x=>{ el(x).className='feedback'; el(x).innerHTML=''; });
+  el('composerText').value='';
+  el('s1btn').classList.remove('hidden'); el('s1btn').disabled=true;
+  el('s1next').classList.add('hidden');
+  el('stage1').classList.remove('hidden');
+  el('stage2').classList.add('hidden'); el('stage3').classList.add('hidden'); el('results').classList.add('hidden');
+  renderStage2(); renderStage3();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---- composer ---- */
+el('composerBtn').onclick = ()=>{
+  const txt = el('composerText').value.trim();
+  if(!txt) return;
+  const s = scoreHeadline(txt, R.ctx);
+  const cls = !s.judge.pass ? 'bad' : s.pts>=24?'good':s.pts>=14?'warn':'bad';
+  fbBlock(el('composerFb'), cls,
+    `<span class="pts">${s.pts} pts</span><h4>${s.judge.pass?'Reward model verdict on your copy':'🚫 '+s.judge.reason}</h4>
+     <div class="kv"><span><b>${s.rm}</b>reward score</span><span><b>${s.ctr}%</b>pred. CTR</span><span><b>${s.complaint}</b>complaint risk</span><span><b>${s.judge.pass?'pass':'FAIL'}</b>judge</span></div>
+     ${bdTable(s.breakdown)}
+     ${s.judge.pass?'<button class="ghost" id="useMine" style="margin-top:10px">Use this as my answer</button>':''}`);
+  if(s.judge.pass){
+    el('useMine').onclick = ()=>{ s1composed = {txt, ...s}; s1sel=null;
+      document.querySelectorAll('#s1opts .opt').forEach(e=>e.classList.remove('sel'));
+      el('s1btn').disabled=false; el('useMine').textContent='✓ Selected — lock it in below'; };
+  }
+};
+
+/* ---- stage 1 ---- */
+el('s1btn').onclick = ()=>{
+  const o = s1composed || R.scored[s1sel];
+  scores[roundIdx].s1 = o.pts; stageDone=1;
+  const bdNames = o.breakdown.map(b=>b[0]);
+  if(bdNames.includes('🚫 Ungrounded claim') || bdNames.includes('🚫 Ungrounded price')) traps.push('clickbait');
+  if(bdNames.includes('🚫 Creepy framing')) traps.push('creepy');
+  if(bdNames.includes('Stale intent')) traps.push('staleCopy');
+  const cls = !o.judge.pass ? 'bad' : o.pts>=24?'good':o.pts>=14?'warn':'bad';
+  fbBlock(el('s1fb'), cls,
+    `<span class="pts">+${o.pts} pts</span><h4>${o.judge.pass?'Reward model verdict':'🚫 '+o.judge.reason}</h4>
+     <div class="kv"><span><b>${o.rm}</b>reward score</span><span><b>${o.ctr}%</b>pred. CTR</span><span><b>${o.complaint}</b>complaint risk</span><span><b>${o.judge.pass?'pass':'FAIL'}</b>judge</span></div>
+     ${bdTable(o.breakdown)}
+     <div style="margin-top:8px;font-size:.84rem;color:#374151">Pool best: <b>${scores[roundIdx].mls1} pts</b> — ${R.scored.reduce((a,b)=>a.pts>b.pts?a:b).txt}</div>
+     <div style="margin-top:6px;font-size:.82rem;color:#6b7280">Field note: at a typical marketplace, ~half of daily sends are still generic recommendations (“Come and take a look 💫”). Intent-anchored headers run ~2× their open rate (14% vs 7%) — and even a winning header loses ~30% of its OR over ~3 months at stable volume. The pool exists because decay never stops.</div>`);
+  el('s1btn').classList.add('hidden'); el('s1next').classList.remove('hidden');
+};
+el('s1next').onclick = ()=>{ el('stage2').classList.remove('hidden'); setProgress(2); stageDone=0;
+  window.scrollTo({top:el('stage2').offsetTop-20, behavior:'smooth'}); };
+
+/* ---- stage 2 ---- */
+function legacyText(){
+  const used = weightSum(weights);
+  const inherited = JSON.stringify(weights)===JSON.stringify(R.initialW) && divW===0;
+  return (inherited
+    ? '⚠ Inherited config: the previous owner spent the full weight budget — randomly, as far as anyone can tell. The slate below is ranked by it right now.'
+    : '🎛 Custom policy active — the slate rebuilds live.')
+    + ` &nbsp;·&nbsp; <b>budget: ${used} / ${budgetCap} points</b>${used>=budgetCap?' (spent — free a point to add one elsewhere)':''}`;
+}
+function renderStage2(){
+  el('s2sub').innerHTML = R.s2sub;
+  const sl = el('sliders'); sl.innerHTML='';
+  const cap=document.createElement('div'); cap.className='wrow';
+  cap.innerHTML=`<label>Model capacity<small>Total weight points you may spend. Bigger models cost more to serve — and force less prioritization.</small></label>
+    <div class="timechips" style="margin-top:0">${BUDGET_OPTIONS.map(b=>`<span class="chip${b===budgetCap?' on':''}" data-cap="${b}">${b} pts</span>`).join('')}</div><div></div>`;
+  sl.appendChild(cap);
+  cap.querySelectorAll('.chip').forEach(ch=>{
+    ch.onclick=()=>{ if(stageDone>0) return;
+      budgetCap=+ch.dataset.cap;
+      cap.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', +c.dataset.cap===budgetCap));
+      let guard=50;
+      while(weightSum(weights)>budgetCap && guard--){           // trim overflow from the largest weight
+        const id = Object.keys(weights).reduce((a,b)=>weights[a]>=weights[b]?a:b);
+        weights[id]--;
+      }
+      FEATURES.forEach(f=>{ const inp=sl.querySelector(`input[data-f="${f.id}"]`);
+        if(inp){ inp.value=weights[f.id]; el('wv_'+f.id).textContent=weights[f.id]; } });
+      el('legacyNote').innerHTML = legacyText(); renderRankList(false); };
+  });
+  FEATURES.forEach(f=>{
+    const row=document.createElement('div'); row.className='wrow';
+    row.innerHTML=`<label>${f.label}<small>${f.desc}</small></label>
+      <input type="range" min="0" max="3" step="1" value="${weights[f.id]}" data-f="${f.id}">
+      <div class="wval" id="wv_${f.id}">${weights[f.id]}</div>`;
+    sl.appendChild(row);
+    row.querySelector('input').oninput = (e)=>{ if(stageDone>0) return;
+      const newVal = +e.target.value;
+      const newSum = weightSum(weights) - weights[f.id] + newVal;
+      if(newSum > budgetCap){ e.target.value = weights[f.id]; return; }   // budget enforced
+      weights[f.id]=newVal; el('wv_'+f.id).textContent=newVal;
+      el('legacyNote').innerHTML = legacyText(); renderRankList(false); };
+  });
+  el('legacyNote').innerHTML = legacyText();
+  const dv = el('divslider'); dv.innerHTML='';
+  const drow=document.createElement('div'); drow.className='wrow';
+  drow.innerHTML=`<label>Diversity demotion<small>Score × a diversity factor that decays with time since the last similar send. At 0, one intent can take every slot — and users get near-identical comms in a row.</small></label>
+    <input type="range" min="0" max="3" step="1" value="${divW}">
+    <div class="wval" id="wv_div">${divW}</div>`;
+  dv.appendChild(drow);
+  drow.querySelector('input').oninput=(e)=>{ if(stageDone>0) return;
+    divW=+e.target.value; el('wv_div').textContent=e.target.value;
+    el('legacyNote').innerHTML = legacyText(); renderRankList(false); };
+  renderRankList(false);
+  el('s2btn').classList.remove('hidden'); el('s2next').classList.add('hidden');
+}
+function renderRankList(reveal){
+  const list = buildSlate();
+  el('ranklist').innerHTML = list.map((it,pos)=>{
+    const chips = `<span class="fchip cl">${it.cluster}</span>` +
+      FEATURES.map(f=>`<span class="fchip">${f.id.toUpperCase()} ${it.f[f.id]}</span>`).join('');
+    const demoted = it.eff < it.base;
+    let truthHtml='';
+    if(reveal && pos<3){
+      const part = reveal.parts[pos];
+      const cl = part.v>=9?'hi':part.v>=4?'md':'lo';
+      truthHtml = `<div class="truth ${cl}">incremental value: ${part.v}${part.mult<1?` (${part.truth} × ${part.mult} — ${ordinal(reveal.parts.slice(0,pos).filter(p=>p.cluster===part.cluster).length+1)} ${part.cluster} item in the slate)`:''} · ${it.note}</div>`;
+    }
+    return `<div class="ritem ${pos<3?'top':''}">
+      <div class="rank">#${pos+1}</div>
+      <div class="body"><div class="nm">${it.nm} <span class="durtag">· ${it.dur}</span></div><div class="fchips">${chips}</div>${truthHtml}</div>
+      <div class="rscore">${it.eff}${demoted?`<small>↓ blender (was ${it.base})</small>`:''}</div></div>`;
+  }).join('');
+}
+function ordinal(n){ return n===1?'1st':n===2?'2nd':n===3?'3rd':n+'th'; }
+el('s2btn').onclick = ()=>{
+  stageDone=1;
+  const slate = buildSlate();
+  const top3 = slate.slice(0,3);
+  const res = slateTruth(top3);
+  top3.forEach(it=>{ if(it.trap) traps.push(it.trap); });
+  if(res.parts.some(p=>p.mult<1)) traps.push('monoSlate');
+  if(JSON.stringify(weights)===JSON.stringify(R.initialW) && divW===0) traps.push('legacyConfig');
+  scores[roundIdx].s2 = res.total;
+  renderRankList(res);
+  fbBlock(el('s2fb'), res.total>=R.mls2-4?'good':res.total>=Math.round(R.mls2*0.55)?'warn':'bad',
+    `<span class="pts">+${res.total} pts</span><h4>Slate value of your top 3 (max ${R.mls2})</h4>
+     <div style="margin-top:6px">Your policy: ${FEATURES.filter(f=>weights[f.id]>0).map(f=>`${f.label} ×${weights[f.id]}`).join(' · ')||'all zeros'} · blender ×${divW} · ${weightSum(weights)}/${budgetCap}-pt model${(res.total>=R.mls2-2 && budgetCap===4)?' — max value on a 4-point model: parsimony is a feature, not a compromise':''}</div>
+     <div style="margin-top:10px;font-size:.85rem;color:#374151">${R.s2lesson}</div>`);
+  el('s2btn').classList.add('hidden'); el('s2next').classList.remove('hidden');
+};
+el('s2next').onclick = ()=>{ el('stage3').classList.remove('hidden'); setProgress(3); stageDone=0;
+  window.scrollTo({top:el('stage3').offsetTop-20, behavior:'smooth'}); };
+
+/* ---- stage 3 ---- */
+const S3CHIPS = [
+  {id:'pm', label:'push 9:00'}, {id:'pe', label:'push 20:00'},
+  {id:'em', label:'email 9:00'}, {id:'ee', label:'email 20:00'},
+  {id:'in', label:'🔔 inbox'}, {id:'skip', label:'skip'}
+];
+function renderStage3(){
+  el('s3sub').innerHTML = R.s3sub;
+  el('s3opts').innerHTML='';
+  R.s3candidates.forEach((o,i)=>{
+    const d=document.createElement('div'); d.className='opt'+(o.locked?' locked':'');
+    let inner = `<div class="txt">${o.txt}</div><div class="sub">${o.sub}</div>`;
+    if(o.locked) inner += `<span class="lockbadge">auto</span>`;
+    else inner += `<div class="timechips">`+S3CHIPS.map(c=>`<span class="chip" data-id="${c.id}">${c.label}</span>`).join('')+`</div>`;
+    d.innerHTML = inner; el('s3opts').appendChild(d);
+    if(!o.locked){ d.querySelectorAll('.chip').forEach(ch=>{
+      ch.onclick=(e)=>{ if(stageDone>0) return; e.stopPropagation();
+        d.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); ch.classList.add('on');
+        const id = ch.dataset.id;
+        if(id==='skip'){ s3sel.delete(i); d.classList.remove('sel'); }
+        else { s3sel.set(i,id); d.classList.add('sel'); }
+        updateFatigue(); };
+    }); }
+  });
+  el('s3btn').classList.remove('hidden'); el('s3next').classList.add('hidden');
+}
+function updateFatigue(){
+  let n=0; s3sel.forEach((id)=>{ if(id!=='in') n++; });
+  const pct = Math.min(R.fatigueStart + n*12, 100);
+  const f = el('fatigue'); if(!f) return;
+  f.style.width=pct+'%';
+  f.style.background = pct>85 ? 'linear-gradient(90deg,#f87171,#dc2626)' : 'linear-gradient(90deg,#fbbf24,#f59e0b)';
+}
+el('s3btn').onclick = ()=>{
+  stageDone=1; let pts=0, lines=[], nMarketing=0;
+  s3sel.forEach((id,i)=>{
+    const o = R.s3candidates[i];
+    const p = o.pts[id];
+    pts += p;
+    if(id!=='in') nMarketing++;
+    const maxP = Math.max(...Object.values(o.pts));
+    let why='';
+    if((id==='pm'||id==='pe') && R.deadPush){ why = 'Bounced — push permissions were revoked in January. The cascade exists so this slot isn’t wasted.'; traps.push('deadChannel'); }
+    else if(p===maxP && p>0) why = o.whyBest||'Right call.';
+    else if(id==='in') why = (p>=0 ? (o.whyInbox||'Inbox-appropriate.') : (o.whyInbox||o.whyNeg));
+    else if(p>0) why = o.whyM||'Positive, not optimal.';
+    else { why = o.whyNeg||'Negative expected value against this user state.'; if(o.trap) traps.push(o.trap); }
+    lines.push(`<div>· <b>${o.txt.split('—')[0].slice(0,46).trim()}</b> ${p>=0?'+':''}${p} — ${why}</div>`);
+  });
+  let penalty=0;
+  if(nMarketing>=4){ penalty=-16; traps.push('overSent');
+    lines.push(`<div>· <b>Unsubscribe event.</b> −16 — ${nMarketing} sends against this fatigue state. Every future message to this user is now worth less.</div>`); }
+  else if(nMarketing===3){ penalty=R.s3penalty3; traps.push('overSent');
+    lines.push(`<div>· <b>Fatigue cost.</b> ${R.s3penalty3} — three sends on this meter. All three were defensible; that’s exactly why the budget exists. The best two tonight, the third tomorrow.</div>`); }
+  if(s3sel.size===0){ lines.push(`<div>· You sent nothing. Restraint is a real policy — but there was at least one clearly positive-EV send on the table. The filter doesn’t mean “never”; it means “when the model can justify it.”</div>`); }
+  pts += penalty;
+  scores[roundIdx].s3 = Math.max(pts,0);
+  fbBlock(el('s3fb'), pts>=scores[roundIdx].mls3-5?'good':pts>=10?'warn':'bad',
+    `<span class="pts">${pts>=0?'+':''}${pts} pts</span><h4>The day, scored</h4>
+     <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px">${lines.join('')}</div>
+     <div style="margin-top:10px;font-size:.85rem;color:#374151">${R.s3policyNote}</div>`);
+  el('s3btn').classList.add('hidden'); el('s3next').classList.remove('hidden');
+};
+el('s3next').onclick = ()=>{ renderKnobs(el('knobs'), false); el('autopilot').classList.remove('hidden');
+  window.scrollTo({top:el('autopilot').offsetTop-20, behavior:'smooth'}); };
+
+/* ============ WEEK SIMULATION (days 2–7) ============ */
+let knobs = {th:7, cap:2, low:'inbox'};
+let simState = null, curDay = 2, oracle = null, retuned = false;
+const TH_OPTS = [{v:3,l:'Aggressive · EV ≥ 3'},{v:7,l:'Balanced · EV ≥ 7'},{v:11,l:'Conservative · EV ≥ 11'}];
+const CAP_OPTS = [1,2,3];
+const LOW_OPTS = [{v:'push',l:'push them'},{v:'inbox',l:'→ notification center'},{v:'drop',l:'drop them'}];
+
+function renderKnobs(target, isRetune){
+  target.innerHTML = `${isRetune?'<h4>Mid-week retune (one shot)</h4><div class="legacy">Three days of telemetry are in. Adjust the policy once — or keep it.</div>':'<h4>Orchestration policy</h4>'}
+    <div class="knobrow"><div class="klabel">Scoring filter threshold<small>“Does this campaign deserve a slot now?” — minimum expected value to earn a send</small></div>
+      <div class="timechips" data-k="th">${TH_OPTS.map(o=>`<span class="chip${knobs.th===o.v?' on':''}" data-v="${o.v}">${o.l}</span>`).join('')}</div></div>
+    <div class="knobrow"><div class="klabel">Daily send cap<small>Per-user budget — the hard ceiling regardless of how good candidates look</small></div>
+      <div class="timechips" data-k="cap">${CAP_OPTS.map(o=>`<span class="chip${knobs.cap===o?' on':''}" data-v="${o}">${o} / day</span>`).join('')}</div></div>
+    <div class="knobrow"><div class="klabel">Low-urgency routing<small>Digests and roundups — interrupt, park, or drop</small></div>
+      <div class="timechips" data-k="low">${LOW_OPTS.map(o=>`<span class="chip${knobs.low===o.v?' on':''}" data-v="${o.v}">${o.l}</span>`).join('')}</div></div>
+    ${isRetune?'<button class="ghost" id="retuneApply">Apply for days 5–7</button>':''}`;
+  target.querySelectorAll('.timechips').forEach(g=>{
+    g.querySelectorAll('.chip').forEach(ch=>{
+      ch.onclick=()=>{ const k=g.dataset.k;
+        knobs[k] = k==='low' ? ch.dataset.v : +ch.dataset.v;
+        g.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); ch.classList.add('on'); };
+    });
+  });
+  if(isRetune){ el('retuneApply').onclick = ()=>{ retuned=true; target.classList.add('hidden'); }; }
+}
+
+function freshSimState(d1Sends){
+  return { f: Math.min(40 + 8*d1Sends, 75), wear:{}, sofa:'alive', pts:0, ur:false, dead:false,
+           urPct: Math.round(d1Sends*6)/100,   // day 1 already spent some budget
+           sends:0, heldPos:0, litter:'none', junk:false, sofaDay:0, series:[] };
+}
+function dayCands(day, st, hasRep){
+  const C = [];
+  const sofaAlive = st.sofa==='alive';
+  if(day===2){ C.push({fam:'bike',icon:'🚴',txt:'New Canyon listing matches her saved search',ev:12});
+    if(sofaAlive) C.push({fam:'sofa',icon:'🛋',txt:'Sofa campaign — 4 days before the move',ev:12});
+    C.push({fam:'jersey',icon:'👕',txt:'Jersey restock she viewed',ev:6},{fam:'blast',icon:'📢',txt:'Sitewide promo blast (another team)',ev:-5},{fam:'digest',icon:'📰',txt:'Weekly digest',ev:2,low:true}); }
+  if(day===3){ C.push({fam:'bike',icon:'📉',txt:'Price drop: Canyon Ultimate she viewed, −€150',ev:15});
+    if(sofaAlive) C.push({fam:'sofa',icon:'🛋',txt:'Sofa campaign — 3 days before the move',ev:11});
+    C.push({fam:'garmin',icon:'📟',txt:'Garmin deal in her price range',ev:6},{fam:'lifecycle',icon:'😴',txt:'Re-engagement template (segment lag, again)',ev:-8},{fam:'blast',icon:'📢',txt:'Sitewide promo blast',ev:-5}); }
+  if(day===4){ C.push({fam:'socks',icon:'🧦',txt:'Cross-sell: cycling socks',ev:4},{fam:'console',icon:'🎮',txt:'PS5 restock alert',ev:3},{fam:'blast',icon:'📢',txt:'Sitewide promo blast',ev:-5},{fam:'digest',icon:'📰',txt:'Mid-week digest',ev:2,low:true}); }
+  if(day===5){ if(sofaAlive) C.push({fam:'sofa',icon:'🛋',txt:'Sofa — LAST DAY: she moves tomorrow',ev:13});
+    C.push({fam:'moving',icon:'📦',txt:'Moving-day bundle: boxes, cleaning, van rental',ev:8},{fam:'bike',icon:'🚴',txt:'Another Canyon listing nearby',ev:10},{fam:'blast',icon:'📢',txt:'Sitewide promo blast',ev:-5}); }
+  if(day===6){ if(hasRep){ C.push({fam:'pet',icon:'🐈',txt:'Cat litter — replenishment window opens (week 6 of 6)',ev:12}); }
+    C.push({fam:'jersey',icon:'📉',txt:'Price drop: favorited jersey, −€12',ev:9},{fam:'pet2',icon:'🧸',txt:'Cross-sell: cat toys',ev:5},{fam:'blast',icon:'📢',txt:'Sitewide promo blast',ev:-5}); }
+  if(day===7){ C.push({fam:'bike',icon:'🚴',txt:'Two new Canyon listings in her size',ev:11});
+    if(st.sofa==='converted') C.push({fam:'home',icon:'🛏',txt:'Post-purchase: cushions for the new sofa',ev:7});
+    C.push({fam:'picks',icon:'✨',txt:'Weekend picks roundup',ev:5},{fam:'digest',icon:'📰',txt:'Weekly digest',ev:2,low:true}); }
+  return C;
+}
+const DAYNOTE = {5:'Moving day — she barely looks at her phone (opens ×0.6)'};
+function fmult(f){ return f<=60?1.0 : f<=80?0.8 : f<=92?0.6 : 0.4; }
+
+function simulateDay(day, st, kn, hasRep){
+  const fStart = st.f, dayMult = day===5?0.6:1;
+  const wasDead = st.dead, urStart = st.urPct;
+  // UR cost per send scales with fatigue: a tired user unsubscribes easier
+  const urBand = fStart<=60?1 : fStart<=80?1.5 : fStart<=92?2.2 : 3;
+  const cands = dayCands(day, st, hasRep);
+  cands.forEach(c=>{ const w = 1/(1+0.3*(st.wear[c.fam]||0));
+    c.evAdj = c.ev>0 ? Math.round(c.ev*w) : c.ev; c.worn = c.ev>0 && c.evAdj<c.ev; });
+  const rows=[]; let sent=0, dayPts=0;
+  // low-urgency routing first (inbox spends no UR budget — that's its point)
+  cands.filter(c=>c.low).forEach(c=>{
+    if(st.dead){ c.dec='held'; c.reason='—'; rows.push(c); return; }
+    if(kn.low==='inbox'){ c.dec='inbox'; dayPts+=3; rows.push(c); }
+    else if(kn.low==='drop'){ c.dec='held'; c.reason='routing: dropped'; rows.push(c); }
+    else { c.pool=true; }
+  });
+  const pool = cands.filter(c=>!c.low || c.pool).sort((a,b)=>b.evAdj-a.evAdj);
+  pool.forEach(c=>{
+    if(st.dead){ c.dec='held'; c.reason='—'; rows.push(c); return; }
+    if(c.evAdj<=0){ c.dec='held'; c.reason='negative EV — the filter holds it'; }
+    else if(c.evAdj>=kn.th && sent<kn.cap){
+      const isJunk = c.evAdj<=4;
+      const urCost = Math.round(6*urBand*(isJunk?2:1))/100;
+      st.urPct = Math.round((st.urPct+urCost)*100)/100;
+      c.urCost = urCost; c.dec='sent'; sent++;
+      st.wear[c.fam]=(st.wear[c.fam]||0)+1;
+      if(st.urPct>=1.0){
+        st.dead=true; st.ur=true;
+        c.gain=0; dayPts-=15;
+        c.reaction='✖ UNSUBSCRIBED. This was the send that broke the budget — no uplift banked, audience gone.';
+      } else {
+        c.gain = Math.round(c.evAdj*dayMult*10)/10;
+        dayPts += c.gain;
+        if(c.fam==='sofa'){ st.sofa='converted'; st.sofaDay=day; }
+        if(c.fam==='pet') st.litter='sent';
+        if(day===4 && isJunk) st.junk=true;
+        c.reaction = (c.gain>=10?'✓ opened — bought from the landing':c.gain>=5?'✓ opened, browsed':c.gain>=2?'glanced, moved on':'ignored')
+          + ` · UR +${urCost.toFixed(2)}%`;
+      }
+    }
+    else { c.dec='held'; c.reason = c.evAdj<kn.th?'below your threshold':'daily cap reached';
+      if(c.evAdj>=7) st.heldPos += c.evAdj; }
+    rows.push(c);
+  });
+  if(hasRep && day===6) st.litter = st.litter==='sent'?'sent':(rows.some(r=>r.fam==='pet')?'held':st.litter);
+  st.f = fStart + 9*sent;
+  st.sends += sent; st.pts += dayPts;
+  st.series.push({day, sends:sent, f:Math.min(st.f,100), ur:st.urPct});
+  const fEnd = st.f;
+  st.f = Math.max(22, st.f-13);                       // overnight recovery
+  if(day===5 && st.sofa==='alive') st.sofa='expired'; // the window closes
+  return {rows, dayPts:Math.round(dayPts*10)/10, fStart, fEnd, urStart, urEnd:st.urPct, urNow:st.dead && !wasDead, sent};
+}
+function runFullWeek(kn, d1Sends, hasRep){
+  const st = freshSimState(d1Sends);
+  for(let d=2; d<=7; d++) simulateDay(d, st, kn, hasRep);
+  return st;
+}
+
+el('apLaunch').onclick = ()=>{
+  el('autopilot').classList.add('hidden');
+  let d1=0; s3sel.forEach((id)=>{ if(id!=='in') d1++; });
+  simState = freshSimState(d1); curDay = 2;
+  el('simcard').classList.remove('hidden'); setProgress(4);
+  window.scrollTo({top:el('simcard').offsetTop-20, behavior:'smooth'});
+};
+el('simNext').onclick = ()=>{
+  if(curDay>7){ goResults(); return; }
+  const hasRep = weights.rep>0;
+  const r = simulateDay(curDay, simState, knobs, hasRep);
+  const d = document.createElement('div'); d.className='daycard';
+  d.innerHTML = `<h4><span>Day ${curDay}</span>${DAYNOTE[curDay]?`<span class="daynote">${DAYNOTE[curDay]}</span>`:''}</h4>
+    <div class="dstate">attention budget at wake: ${r.fStart}% · <b>weekly UR at wake: ${r.urStart.toFixed(2)}% / 1.00%</b> · policy: EV ≥ ${knobs.th}, cap ${knobs.cap}/day, low-urgency → ${knobs.low}</div>
+    ${(curDay===6 && !hasRep)?'<div class="dstate" style="color:var(--bad)">⚠ The replenishment window opened today — but your ranker has replenishment weight 0, so the litter campaign was never surfaced.</div>':''}
+    ${r.rows.map(c=>`<div class="cand"><span>${c.icon}</span><div class="ctext">${c.txt}
+        ${c.dec==='sent'?`<div class="outcome">${c.reaction} · +${c.gain}</div>`:''}
+        ${c.dec==='held'&&c.reason?`<div class="outcome">${c.reason}</div>`:''}</div>
+      <div class="ev">${c.evAdj}${c.worn?`<small>↓ wear (was ${c.ev})</small>`:''}</div>
+      <span class="badge ${c.dec==='sent'?'sent':c.dec==='inbox'?'inbox':(c.evAdj<=0?'bad':'held')}">${c.dec==='sent'?'SENT 20:00':c.dec==='inbox'?'→ INBOX':'HELD'}</span></div>`).join('')}
+    ${r.urNow?'<div class="urbanner">💀 GAME OVER — weekly UR hit 1.00%. Maria unsubscribed. The uplift you banked stays; everything the rest of the week would have earned is gone. In production this line is why the per-user budget model exists.</div>':''}
+    ${(curDay===6 && simState.sofa==='expired')?'<div class="dstate" style="color:var(--warn)">The sofa intent expired — she moved yesterday and bought one elsewhere.</div>':''}
+    <div class="dayfoot"><span>day total: <b>${r.dayPts>=0?'+':''}${r.dayPts}</b> · banked: <b>${Math.round(simState.pts)}</b></span><span>UR: <b>${r.urEnd.toFixed(2)}%</b> · attention at night: <b>${Math.min(r.fEnd,100)}%</b></span></div>`;
+  el('simdays').appendChild(d);
+  const f = el('fatigue'); if(f){ f.style.width=Math.min(r.fEnd,100)+'%';
+    f.style.background = r.urEnd>=0.8 ? 'linear-gradient(90deg,#f87171,#dc2626)' : 'linear-gradient(90deg,#fbbf24,#f59e0b)'; }
+  curDay++;
+  if(simState.dead){ curDay = 8; el('retunePanel').classList.add('hidden'); }
+  else if(curDay===5 && !retuned){ renderKnobs(el('retunePanel'), true); el('retunePanel').classList.remove('hidden'); }
+  el('simNext').textContent = curDay<=7 ? `Advance to Day ${curDay} →` : (simState.dead ? 'See the post-mortem →' : 'See the week debrief →');
+  window.scrollTo({top:d.offsetTop-20, behavior:'smooth'});
+};
+function goResults(){
+  let d1=0; s3sel.forEach((id)=>{ if(id!=='in') d1++; });
+  oracle = runFullWeek({th:7,cap:2,low:'inbox'}, 2, true);
+  if(simState.ur) traps.push('urEvent');
+  if(simState.sofa==='expired') traps.push('missedWindow');
+  if(weights.rep===0) traps.push('noReplenish');
+  if(simState.junk) traps.push('junkDay');
+  setProgress(5); renderResults(); el('results').classList.remove('hidden');
+  window.scrollTo({top:el('results').offsetTop-20, behavior:'smooth'});
+}
+
+/* ---- results ---- */
+const TRAPTEXT = {
+  clickbait:['🪤 The clickbait trap','Highest predicted CTR in the pool — and the exact thing the judge model exists to block. In production this is reward hacking; in the inbox it’s a complaint.'],
+  creepy:['🪤 The surveillance trap','Factually accurate, brand-fatal. “We noticed you were looking at…” passes the fact check and fails the human one.'],
+  staleCopy:['🪤 Stale-intent copy','You messaged October behavior in April. Recency beats frequency.'],
+  legacyConfig:['🪤 The legacy-config trap','You committed the inherited config without touching a slider. Nobody chose those weights — they accreted. An unexamined ranking policy is still a policy; it just has no owner.'],
+  engagementTrap:['🪤 The engagement trap','A high-CTR, low-relevance item made your slate. Everyone clicks the console; almost nobody buys because of the slot.'],
+  alwaysTaker:['🪤 The always-taker trap','You featured something the user already bought. Long-term interest without uplift — the purchase already happened.'],
+  staleItems:['🪤 The stale-signal trap','Six views in October don’t survive to April. History is a feature, not a verdict.'],
+  monoSlate:['🪤 The monoculture trap','Two or more same-intent items in one slate. The 2nd bike item kept 30% of its value, the 3rd kept 10% — she buys one bike, not three. This is why the blender exists.'],
+  wrongLifecycle:['🪤 The lifecycle-lag trap','A “we miss you” to an active user — the segment refresh lagged and the copy followed it.'],
+  deadChannel:['🪤 The dead-channel trap','You pushed into revoked permissions. The cascade exists so that slot isn’t wasted.'],
+  overSent:['🪤 The volume trap','You spent attention the user didn’t have — including on genuinely good sends. Three defensible sends can still be one too many.'],
+  urEvent:['🪤 The compounding trap','Every send your autopilot made was locally positive-EV — and the week still ended at 1.00% UR and a dead audience member. The unsubscribe budget is a stock, not a flow: each send spends it, fatigue makes sends spend it faster, and it never refunds. The send/no-send filter exists to price exactly this.'],
+  missedWindow:['🪤 The expiring-intent trap','The sofa window closed unsent. Temporary intents (life events) have deadlines that thresholds and caps don’t see — production handles this with time-to-live on intent segments.'],
+  noReplenish:['🪤 The blind-ranker trap','Your Day-1 ranker had replenishment weight 0, so the day-6 litter window never even surfaced. The policy you set upstream decides what the system can see downstream.'],
+  junkDay:['🪤 The quiet-day trap','Day 4 offered nothing above junk EV — and the policy sent anyway. Quiet days are when the attention budget recovers; spending them is how aggressive configs die by day 6.']
+};
+function renderResults(){
+  const s = scores[0];
+  const wYou = Math.round(simState.pts), wMl = Math.round(oracle.pts);
+  const youT = s.s1+s.s2+s.s3+wYou;
+  const mlT  = s.mls1+s.mls2+s.mls3+wMl;
+  let rows=[
+    ['Day 1 · Content', s.s1, s.mls1],
+    ['Day 1 · Ranker + blender', s.s2, s.mls2],
+    ['Day 1 · Orchestration', s.s3, s.mls3],
+    ['Days 2–7 · Your autopilot', wYou, wMl]
+  ];
+  rows.push(['Total', youT, mlT]);
+  el('scorebars').innerHTML = rows.map(r=>{
+    const m = Math.max(r[2], r[1], 1);
+    return `<div class="scorerow"><div class="lbl"><span><b>${r[0]}</b></span><span>you ${r[1]} · stack ${r[2]}</span></div>
+      <div class="bar you"><i data-w="${Math.min(r[1]/m*100,100)}"></i></div>
+      <div class="bar ml"><i data-w="${Math.min(r[2]/m*100,100)}"></i></div></div>`; }).join('');
+  setTimeout(()=>document.querySelectorAll('#scorebars .bar i').forEach(b=>b.style.width=b.dataset.w+'%'),60);
+  const v=el('verdict'), vs=el('verdictSub');
+  if(youT>=mlT){ v.textContent='🏆 You matched the machine.'; vs.textContent='Now do it five billion times a month without drifting. That consistency is what the investment buys.'; }
+  else if(youT>=mlT-15){ v.textContent='⚙️ Close — the stack edges you out.'; vs.textContent='Your instincts were right more often than not. The models exist because “more often than not” doesn’t survive a billion decisions.'; }
+  else { v.textContent='🤖 The stack wins this one.'; vs.textContent='Check the trap report — every lost point has a name and a model that prevents it.'; }
+  // --- week debrief ---
+  const S = simState;
+  const verdict = S.dead ? ['💀 Game over — the budget broke.', `You banked ${wYou} points before Maria unsubscribed. Every send was locally defensible; the week still died. Aggression pays right up to the line — past it, the audience member and all her future uplift are gone, permanently.`]
+    : S.urPct>=0.80 ? ['😅 Racing the line — and it held.', `Weekly UR ${S.urPct.toFixed(2)}% against the 1.00% ceiling. This is what skilled aggression looks like: maximum uplift extracted while the budget survived. One more junk send and this debrief reads differently.`]
+    : S.urPct>=0.40 ? ['🌡 Calibrated.', `Weekly UR ${S.urPct.toFixed(2)}% — solid uplift with real headroom. The question a CPO should ask: could the leftover ${(1-S.urPct).toFixed(2)}% of budget have been converted into more purchases? That’s what the per-user limit model optimizes daily.`]
+    : ['🧊 Too cold.', `Weekly UR ${S.urPct.toFixed(2)}% — you left most of the budget unspent and held ${S.heldPos} points of positive-EV sends. Protecting the unsubscribe rate to near-zero is its own loss; the budget exists to be converted into purchases.`];
+  const moments = [];
+  moments.push(S.sofa==='converted' ? `✅ <b>The life event:</b> sofa converted on day ${S.sofaDay} — the temporary intent was caught before the June 1 window closed.`
+    : `❌ <b>The life event:</b> the sofa window expired unsent. Temporary intents don’t wait for the backlog.`);
+  moments.push(weights.rep===0 ? `❌ <b>The replenishment clock:</b> litter never surfaced — your Day-1 ranker had replenishment at 0, so the system couldn’t see the standing need. Day-1 policy gates what the autopilot can do on day 6.`
+    : S.litter==='sent' ? `✅ <b>The replenishment clock:</b> litter sent in the day-6 window — the unglamorous send with the most certain need behind it.`
+    : `⚠ <b>The replenishment clock:</b> litter surfaced on day 6 but lost the slot under your threshold/cap.`);
+  moments.push(S.dead ? `❌ <b>The budget:</b> UR hit 1.00% — the one outcome that doesn’t mean-revert. Days ${S.series.filter(x=>x.sends>0).length<6?'after the breach':'—'} were forfeited.`
+    : `✅ <b>The budget:</b> week closed at ${S.urPct.toFixed(2)}% UR of the 1.00% ceiling; peak attention load ${Math.max(...S.series.map(x=>x.f))}%.`);
+  moments.push(S.junk ? `❌ <b>The quiet day:</b> day 4 had nothing worth sending — the policy sent anyway. Junk sends on quiet days are pure fatigue debt.`
+    : `✅ <b>The quiet day:</b> day 4 was held — fatigue recovered, and day 5–6 sends landed on a fresher user.`);
+  const chart = `<div class="weekchart">${S.series.map(x=>`<div class="wday"><div class="wbars">
+      <i class="bs" style="height:${Math.max(x.sends*18,3)}px" title="${x.sends} sends"></i>
+      <i class="bf" style="height:${Math.round(x.f*0.6)}px" title="fatigue ${x.f}%"></i></div><span>D${x.day}</span></div>`).join('')}
+    </div><div style="font-size:.72rem;color:var(--muted);text-align:center">▮ sends · <span style="color:#b45309">▮ attention load</span>, per day</div>`;
+  el('weekDebrief').innerHTML = `<h2 class="stage-title" style="margin-top:16px">Week debrief — how your policy ran</h2>
+    <div class="feedback show ${verdict[0].includes('hot')?'bad':verdict[0].includes('cold')?'warn':'good'}" style="display:block">
+      <h4>${verdict[0]}</h4><div>${verdict[1]}</div>
+      <div class="kv"><span><b>${S.sends}</b>sends D2–7</span><span><b>${wYou}</b>uplift banked</span><span><b>${wMl}</b>production policy</span><span><b>${S.urPct.toFixed(2)}%</b>weekly UR (limit 1%)</span><span><b>${retuned?'yes':'no'}</b>mid-week retune</span></div>
+      ${chart}
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px">${moments.map(m=>`<div>${m}</div>`).join('')}</div>
+    </div>`;
+  const uniq=[...new Set(traps)];
+  el('trapReport').innerHTML = '<h2 class="stage-title" style="margin-top:16px">Trap report</h2>' +
+    (uniq.length? uniq.map(t=>`<div class="trap"><b>${TRAPTEXT[t][0]}</b><br>${TRAPTEXT[t][1]}</div>`).join('')
+     : '<div class="clean"><b>🧼 Clean run.</b> You dodged every named trap. (Most players don’t — that’s the aggregate stat this demo will publish once telemetry is on.)</div>');
+}
+
+startRound(0);
+</script>
+</body>
+</html>
