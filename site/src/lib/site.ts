@@ -4,12 +4,10 @@ export const SITE = {
   title: 'Denis Zhurba — Product leader, AI/ML at scale',
   description:
     'Denis Zhurba builds AI/ML products. Consulting and strategy, then a hands-on consumer AI startup, now AI/ML product leadership — currently in country management at an international e-commerce platform.',
-  // TODO: confirm the public contact email and profile URLs before launch.
-  email: 'hello@deniszhurba.com', // TODO
+  email: 'info@plsfix.co.uk',
   profiles: {
-    LinkedIn: 'https://www.linkedin.com/in/', // TODO
-    GitHub: 'https://github.com/dvzhurba', // TODO confirm
-    X: 'https://x.com/', // TODO
+    LinkedIn: 'https://www.linkedin.com/in/deniszhurba/',
+    GitHub: 'https://github.com/dvzhurba',
   },
 };
 

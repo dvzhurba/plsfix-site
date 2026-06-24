@@ -1,6 +1,5 @@
 ---
 title: CV
-pdf: /cv.pdf
 updated: 2026-06-24
 ---
 
