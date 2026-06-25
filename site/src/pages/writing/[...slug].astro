@@ -13,6 +13,16 @@ const d: any = item.data;
 const { Content } = await render(item);
 const external = typeof d.external_url === "string" && /^https?:\/\//.test(d.external_url);
 
+const fmtDate = (v?: string) => {
+  if (!v) return "";
+  const dt = new Date(v);
+  return isNaN(dt.getTime())
+    ? String(v)
+    : dt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+};
+const pub = d.publication && d.publication !== "Self" ? d.publication : null;
+const meta = [pub, fmtDate(d.date)].filter(Boolean).join(" · ");
+
 const articleLd = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -26,7 +36,7 @@ const articleLd = {
   <p class="small"><a href={withBase("/writing")}>← Writing</a></p>
   <h1>{d.title}</h1>
   <p class="muted">
-    {d.status === "draft" ? "Draft — placement pending" : [d.publication, d.date].filter(Boolean).join(" · ")}
+    {d.status === "draft" ? "Draft — placement pending" : meta}
   </p>
   {d.summary && <p class="lead">{d.summary}</p>}
   {external ? (

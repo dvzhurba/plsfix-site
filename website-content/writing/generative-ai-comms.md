@@ -1,48 +1,92 @@
 ---
-title: "Writing comms with generative AI: how to get copy that actually performs"
+title: "Writing comms with generative AI: a pipeline, not a prompt"
 date: 2026-06-25
-summary: "Generative AI can write a thousand push and email variants a minute — most of them mediocre. The practitioner's playbook for copy that performs: category-controlled generation, a reward model that does the selecting, multi-task scoring, brand-voice guardrails, and the one thing you must never automate — closing the loop on raw clicks."
+summary: "Generation was never the bottleneck — selection is. The pipeline that turns a thousand raw variants into copy that performs: generate under category control, gate with cheap deterministic checks, then an LLM judge on a rubric, then a reward model that selects, then rotation and A/B — and the one loop you must never close."
 publication: Self
 tags: [ai, ml, llm, communications, copywriting, crm]
 featured: false
 ---
 
-Here's the thing nobody tells you when they sell you "AI copywriting": generation was never the bottleneck. A copy team could always write more headlines than you could test. An LLM just makes that imbalance absurd — it'll write a thousand variants a minute, and roughly nine hundred of them are correct, on-brand, and instantly forgettable. The hard problem moved. It's not *producing* copy anymore. It's *choosing* which copy to send, before it burns a real impression on a real user.
+Generation was never the bottleneck. A copy team could always write more headlines than could be tested; an LLM makes the imbalance absurd — a thousand variants a minute, most of them correct, on-brand and instantly forgettable, a few actively dangerous. The hard problem is not producing copy. It is everything between the model's output and a real impression on a real user.
 
-So the playbook for writing good comms with generative AI isn't really about the writing. It's about everything wrapped around it. Here's what actually works.
+So the object to build is a **pipeline, not a prompt** — five stages, with the craft living in the boring middle ones that nobody demos.
 
-## Generate with category control, not free rein
+<figure class="fig">
+<svg viewBox="0 0 720 116" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The content pipeline: generate, rule checks, LLM judge, reward-model select, rotate and A/B test">
+  <defs><marker id="pa" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" style="fill:none;stroke:var(--faint);stroke-width:1.4"/></marker></defs>
+  <g style="font-family:var(--mono)">
+    <rect x="12" y="32" width="118" height="52" rx="9" style="fill:var(--soft);stroke:var(--line)"/>
+    <text x="71" y="60" text-anchor="middle" style="font-size:12px;fill:var(--ink)">GENERATE</text>
+    <text x="71" y="75" text-anchor="middle" style="font-size:9px;fill:var(--faint)">variants</text>
+    <rect x="152" y="32" width="118" height="52" rx="9" style="fill:var(--soft);stroke:var(--line)"/>
+    <text x="211" y="60" text-anchor="middle" style="font-size:12px;fill:var(--ink)">CHECKS</text>
+    <text x="211" y="75" text-anchor="middle" style="font-size:9px;fill:var(--faint)">regex + rules</text>
+    <rect x="292" y="32" width="118" height="52" rx="9" style="fill:var(--soft);stroke:var(--line)"/>
+    <text x="351" y="60" text-anchor="middle" style="font-size:12px;fill:var(--ink)">JUDGE</text>
+    <text x="351" y="75" text-anchor="middle" style="font-size:9px;fill:var(--faint)">LLM rubric</text>
+    <rect x="432" y="32" width="118" height="52" rx="9" style="fill:var(--accent);fill-opacity:.1;stroke:var(--accent);stroke-width:2"/>
+    <text x="491" y="60" text-anchor="middle" style="font-size:12px;fill:var(--accent)">SELECT</text>
+    <text x="491" y="75" text-anchor="middle" style="font-size:9px;fill:var(--accent)">reward model</text>
+    <rect x="572" y="32" width="118" height="52" rx="9" style="fill:var(--soft);stroke:var(--line)"/>
+    <text x="631" y="60" text-anchor="middle" style="font-size:12px;fill:var(--ink)">ROTATE</text>
+    <text x="631" y="75" text-anchor="middle" style="font-size:9px;fill:var(--faint)">A/B + refresh</text>
+  </g>
+  <g style="stroke:var(--faint);stroke-width:1.4">
+    <line x1="132" y1="58" x2="150" y2="58" marker-end="url(#pa)"/>
+    <line x1="272" y1="58" x2="290" y2="58" marker-end="url(#pa)"/>
+    <line x1="412" y1="58" x2="430" y2="58" marker-end="url(#pa)"/>
+    <line x1="552" y1="58" x2="570" y2="58" marker-end="url(#pa)"/>
+  </g>
+</svg>
+<figcaption>The pipeline. The two cheapest stages — rule checks and the judge — remove most of the risk; the reward model, the only part that is genuinely yours, decides what performs.</figcaption>
+</figure>
 
-Ask an LLM for "10 push notifications for this campaign" and you get ten variations of the same safe sentence. The fix is to make it generate *within deliberately different content categories* — Suspense ("Something's waiting for you"), Emotion ("We missed you"), Practical ("Your balance just updated"), Plot ("A new candidate just applied to your role"). The taxonomy comes out of newsroom A/B practice and it transfers cleanly to comms. Category control buys you a *diverse* candidate pool with a better worst case, instead of ten near-duplicates clustered around the average. Generation is cheap; the constraint you want is variety, not volume.
+## Generate: broadly, under control
 
-## Let a reward model do the choosing — this is the moat
+A prompt for "10 push notifications" returns ten variations of one safe sentence. The control that matters is **category control** — generate within deliberately different content categories: Suspense ("Something's waiting for you"), Emotion ("We missed you"), Practical ("Your balance just updated"), Plot ("A new candidate just applied to your role"). The taxonomy comes from newsroom A/B practice and transfers cleanly to comms; it buys a *diverse* pool with a better worst case rather than ten near-duplicates around the mean. The constraint to enforce is variety, not volume.
 
-Once you have a diverse pool, something has to pick. The naive signal is post-launch click-through rate, but that's slow (you need enough sends to measure) and noisy on fresh variants with tiny denominators. The answer is a **pairwise reward model**: a small encoder (BERT-class, 100–300M params) trained on your paired A/B history that, given two candidates and a user context, predicts which will perform better — *before* either one spends a send.
+The generator itself need not be a frontier model. A small open-weights model — 7B-class — fine-tuned on the platform's own copy, with a **custom tokenizer for the language**, can beat much larger general models on that domain and run cheap enough to generate thousands of variants a minute. One large marketplace built exactly that: a 7B base retokenised for its language — which roughly doubled throughput on it — tuned on its own commerce text and topping the lightweight-model leaderboards in that language. The model is a commodity; owning a fast, cheap, on-domain one is the leverage.
 
-This is the part that's yours. The LLM is a commodity API call that everyone has; the reward model is trained on *your* traffic, in *your* language, on *your* users, and it gets better the more you run. Kuaishou's PushGen system reported the share of generated variants beating the human baseline climbing from 44% to 83% as the reward model matured, alongside double-digit CTR gains on replaced notifications. Read that twice: the generator stayed roughly constant; the **selector** is what compounded. Teams that try to differentiate on the LLM instead of the reward model are optimising the one component that commoditises the day the next foundation model ships.
+## Cheap checks first: regex and rules
 
-## Score on more than the click
+Before a single LLM call evaluates quality, run the deterministic gate. Most bad variants fail for boring, *checkable* reasons — a "free", "-50%" or "guarantee" the brief never authorised; a price or count absent from the source data; ALL CAPS; three exclamation marks; an emoji storm; a phone number or raw link; length out of bounds; a banned word. Regex and rules catch every one of those in microseconds, deterministically, with an audit trail, and they remove the majority of the junk before it reaches anything expensive. The rule is simple: **if a check can be written as a regex or a lookup, it should never be an LLM's job.** Skipping this layer is the common, expensive mistake — it spends judge budget on failures that a lookup would have caught.
 
-"Performs better" can't mean clicks alone. A variant that opens 15% better and complains 30% more is a net loss you won't see until your deliverable audience has quietly shrunk. So the reward model scores a **composite**: open rate, click rate, the downstream business action (the deal, the deposit, the booking), and complaint/unsubscribe risk — with the weights tuned at the *program* level, not per campaign. Optimise one number and you'll get exactly that number, gamed, within two cycles.
+## The judge: LLM-as-judge, on a rubric
 
-## Guardrails are part of the product, not a compliance afterthought
+What survives the rules needs judgement a regex cannot make — is every factual claim **grounded** in the brief, is the tone on-brand, is it safe and non-deceptive. The mechanism is an **LLM-as-judge**, but not "is this good?": a **per-domain rubric** — explicit criteria, a fixed *held-out* set of test cases, and a score tracked over time. One large marketplace controls its generation quality this exact way: for each domain, a judge prompt spelling out detailed criteria, run on held-out cases, used as the signal for whether a model or prompt change actually helped. The point most teams miss is that the judge is also the **regression test for the generator** — the way you learn that a small tweak to the generation prompt quietly made the copy worse, before users do.
 
-Generative copy fails in specific, predictable ways, so you engineer against them up front:
+## Select: the reward model
 
-- **Grounding.** Every factual claim in a variant must be present in the campaign brief. No invented discounts, no "free" that isn't free, no counts that don't exist. A judge model checks it; ungrounded variants never reach the pool.
-- **Brand voice.** Bake the constraints into the generation prompt and score against them, so the model can't drift into a register that isn't yours.
-- **A human gate on new prompts.** The first batch from any new generation prompt gets eyeballed before it ships at volume. Cheap insurance.
+Checks and the judge decide what is *allowed*; neither decides what will *perform*. That requires learning from outcomes. Post-launch click-through is the naive signal — slow, and noisy on fresh variants with tiny denominators. The mechanism is a **pairwise reward model**: a small encoder (BERT-class, 100–300M params) trained on the platform's paired A/B history that, given two candidates and a user context, predicts which wins before either spends a send.
 
-## The failure mode that eats teams: reward-hacking on raw CTR
+This is the part that is genuinely yours. The LLM is a commodity everyone has; the reward model is trained on *your* traffic, in *your* language, on *your* users, and compounds with use. Kuaishou's PushGen reported the share of generated variants beating the human baseline climbing from 44% to 83% as the reward model matured, with double-digit CTR gains on replaced notifications — the generator held roughly constant; the **selector** improved. And it scores a **composite**, never clicks alone — open rate, click, the downstream business action, complaint and unsubscribe risk, weighted at the program level. A variant that opens better and complains more is a net loss that surfaces only once the deliverable audience has shrunk.
 
-This is the one to tattoo on the wall. If you close the loop — RL or DPO the generator directly against raw click-through — the model learns the shortcuts that spike clicks: price overclaims, flagship-brand name-drops, urgency and clickbait framings, and eventually outright factual hallucination. It will get your CTR up and your brand and complaint rates with it. The published guidance is blunt: **selection only**. Generation stays at supervised fine-tuning. The reward model decides which variant goes live; the LLM is never optimised against the reward model's gradient. You get the upside of generation without teaching your system to lie.
+## Rotate and A/B
 
-## When a bandit beats the whole pipeline
+The reward model gates *pre-launch*; the live experiment confirms. Two things govern this stage. **Rotation against wear-out** — a fresh headline decays (half-life of 60–120 days at stable volume), so generation runs continuously and the reward model keeps swapping the champion, flattening the decay rather than resetting it on a quarterly cadence. **The bandit boundary** — in a small, well-understood variant space (three subject-line styles on a transactional email) the whole pipeline is overkill; a multi-armed bandit converges faster and more reliably. The generate→check→judge→select→rotate machine earns its keep only when the space is too large to explore by bandit.
 
-Don't reach for the LLM stack when you don't need it. In a *small* variant space with fast feedback and well-understood framings — three or four established subject-line styles on a transactional email — a plain multi-armed bandit converges faster and more reliably than any generation pipeline. The LLM-plus-reward-model approach earns its keep when the variant space is large enough that exploring it by bandit becomes infeasible. Match the tool to the size of the space.
+<figure class="fig">
+<svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The variant funnel: a thousand generated, a fraction pass rule checks, fewer pass the judge, the reward model ranks the rest, one ships and A/B confirms">
+  <rect x="40" y="18" width="600" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>
+  <text x="340" y="40" text-anchor="middle" style="font-size:12px;fill:var(--muted)">~1,000 generated under category control</text>
+  <rect x="110" y="60" width="460" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>
+  <text x="340" y="82" text-anchor="middle" style="font-size:12px;fill:var(--muted)">pass rule checks (regex)</text>
+  <rect x="170" y="102" width="340" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>
+  <text x="340" y="124" text-anchor="middle" style="font-size:12px;fill:var(--muted)">pass the judge (grounded · on-brand · safe)</text>
+  <rect x="220" y="144" width="240" height="34" rx="8" style="fill:var(--accent);fill-opacity:.1;stroke:var(--accent);stroke-width:2"/>
+  <text x="340" y="166" text-anchor="middle" style="font-size:12px;fill:var(--accent)">reward model ranks the survivors</text>
+  <rect x="280" y="186" width="120" height="30" rx="8" style="fill:var(--soft);stroke:var(--line)"/>
+  <text x="340" y="206" text-anchor="middle" style="font-family:var(--mono);font-size:11px;fill:var(--ink)">SHIP &#8594; A/B</text>
+</svg>
+<figcaption>A thousand candidates in, one ships — and the live A/B feeds the reward model that picked it.</figcaption>
+</figure>
 
-## So, how do you write good comms with AI?
+## The loop you never close: reward-hacking on raw CTR
 
-You don't, exactly — you *generate broadly, select ruthlessly, and guardrail relentlessly*. Let the model write a diverse pool under category control. Let a reward model trained on your own traffic pick the winner against a multi-metric score. Ground every claim, protect the brand voice, and never, ever optimise the writer against raw clicks. The copy that performs isn't the cleverest sentence the model can produce — it's the one your selector can prove will work before it costs you a user.
+One failure mode eats teams. Close the loop — RL or DPO the *generator* directly against raw click-through — and the model learns the shortcuts that spike clicks: price overclaims, flagship-brand name-drops, urgency and clickbait, eventually outright hallucination. CTR rises, and complaint and brand-risk rates rise with it. The published guidance is blunt: **selection only.** Generation stays at supervised fine-tuning; the reward model decides which variant ships; the LLM is never optimised against the reward model's gradient. The pipeline buys the upside of generation without teaching the system to lie — which is also why the rule checks and the judge exist.
 
-*For the full architecture this sits inside — measurement, orchestration, and where AI plugs into the rest of the comms stack — see [what AI/ML CRM can actually do in 2026](/read/ai-ml-crm-2026/).*
+## In one line
+
+Generate broadly, gate cheaply, judge strictly, select ruthlessly, rotate continuously — and never optimise the writer against raw clicks. The copy that performs is not the cleverest sentence the model can produce; it is the one that cleared the checks, satisfied the judge, and won the reward model's comparison before it ever cost a user.
+
+*For the architecture this sits inside — measurement, orchestration, and where AI plugs into the rest of the comms stack — see [what AI/ML CRM can actually do in 2026](/read/ai-ml-crm-2026/).*

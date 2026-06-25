@@ -1,10 +1,12 @@
 ---
-title: Product Management course (author)
-date: TODO  # year authored
+title: Invited expert — Netology
+date: 2023-07-19
 type: talk
 venue: Netology
-url: TODO  # course page showing author name
-note: Authored and delivered a Product Management course on one of the largest online-education platforms (600k+ active learners); remains in the catalogue.
+url: /proof/netology-letter.pdf
+note: Invited product-analytics expert on one of the largest online-education platforms in the region (600k+ learners).
 ---
 
-I authored and delivered a Product Management course for Netology, one of the largest online universities in the region (600k+ active learners). The course has been taken by thousands of students and remains a structured part of the catalogue.
+Invited as a product-analytics expert at Netology — one of the largest online universities in the region, with hundreds of courses and 600k+ learners. I contributed expertise to its Data Science programme, helping translate analytics practice into structured teaching material.
+
+Proof: [Netology letter (PDF)](/proof/netology-letter.pdf).

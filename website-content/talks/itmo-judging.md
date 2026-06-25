@@ -1,10 +1,12 @@
 ---
-title: Judge — "Innovation Projects Management" final exam
-date: TODO
+title: Invited expert & judge — ITMO University
+date: 2023-06-20
 type: judging
 venue: ITMO University
-url: TODO  # attach university confirmation letter
-note: Invited external judge; reviewed 6 student projects across AI, AR, and VR, turning prototypes into experiment backlogs with owners and metrics.
+url: /proof/itmo-gratitude-letter.pdf
+note: Invited external expert; reviewed student projects and ran the session as a product review, turning prototypes into experiment backlogs with owners and metrics.
 ---
 
-Served as an invited external judge for the "Innovation Projects Management" final exam at ITMO University, reviewing six student projects in AI, AR, and VR. I ran the session as a product review — the prototypes left with short experiment backlogs, owners, metrics, and a realistic go-to-market plan.
+Served as an invited external expert and judge at ITMO University, reviewing student projects and final presentations. I ran the session as a product review — the prototypes left with short experiment backlogs, owners, metrics, and a realistic go-to-market plan.
+
+Proof: [ITMO gratitude letter (PDF)](/proof/itmo-gratitude-letter.pdf).

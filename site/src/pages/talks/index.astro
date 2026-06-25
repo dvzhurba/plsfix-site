@@ -3,9 +3,15 @@ import Base from "../../layouts/Base.astro";
 import { withBase } from "../../lib/site";
 import { getCollection } from "astro:content";
 
-const items = (await getCollection("talks")).sort((a, b) =>
-  String(b.data.date ?? "").localeCompare(String(a.data.date ?? "")),
-);
+const ts = (v?: string) => { const t = new Date(String(v ?? "")).getTime(); return isNaN(t) ? 0 : t; };
+const fmtDate = (v?: any) => {
+  if (!v || /todo/i.test(String(v))) return "";
+  const dt = new Date(v);
+  return isNaN(dt.getTime()) ? String(v) : dt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+};
+const items = (await getCollection("talks"))
+  .filter((t) => !t.data.unlisted)
+  .sort((a, b) => ts(b.data.date) - ts(a.data.date));
 ---
 <Base title="Talks" description="Talks, lectures, panels, and judging by Denis Zhurba.">
   <h1>Talks &amp; lectures</h1>
@@ -14,7 +20,7 @@ const items = (await getCollection("talks")).sort((a, b) =>
       <li>
         <div class="row">
           <a class="t" href={withBase(`/talks/${t.id}`)}>{t.data.title}</a>
-          <span class="d">{[t.data.venue, t.data.date].filter((x) => x && !/todo/i.test(String(x))).join(" · ")}</span>
+          <span class="d">{[t.data.venue, fmtDate(t.data.date)].filter((x) => x && !/todo/i.test(String(x))).join(" · ")}</span>
         </div>
         {t.data.note && <div class="note">{t.data.note}</div>}
       </li>

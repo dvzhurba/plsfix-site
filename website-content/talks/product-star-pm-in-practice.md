@@ -1,9 +1,10 @@
 ---
 title: "Product Management in Practice"
-date: TODO
+date: 2022-08-18
 type: talk
 venue: Product Star
-url: TODO  # YouTube recording
+url: https://www.youtube.com/watch?v=MZQ9OrUp_8k
+unlisted: true  # merged into productstar-pm-skills (same talk)
 note: Lecture for early-career product managers; recorded and distributed online, with certificates issued by Product Star.
 ---
 

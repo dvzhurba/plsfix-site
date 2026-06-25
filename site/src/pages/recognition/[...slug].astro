@@ -11,8 +11,14 @@ export async function getStaticPaths() {
 const { item } = Astro.props;
 const d: any = item.data;
 const { Content } = await render(item);
-const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
-const meta = [d.venue, d.date].filter((x: any) => x && !/todo/i.test(String(x))).join(" · ");
+const real = (h?: string) => typeof h === "string" && (/^https?:\/\//.test(h) || h.startsWith("/proof/"));
+const isDoc = (h?: string) => typeof h === "string" && h.toLowerCase().endsWith(".pdf");
+const fmtDate = (v?: any) => {
+  if (!v || /todo/i.test(String(v))) return "";
+  const dt = new Date(v);
+  return isNaN(dt.getTime()) ? String(v) : dt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+};
+const meta = [d.venue, fmtDate(d.date)].filter((x: any) => x && !/todo/i.test(String(x))).join(" · ");
 ---
 <Base title={d.title} description={d.note ?? d.title}>
   <p class="small"><a href={withBase("/recognition")}>← Recognition</a></p>
@@ -21,6 +27,6 @@ const meta = [d.venue, d.date].filter((x: any) => x && !/todo/i.test(String(x)))
   {d.note && <p class="lead">{d.note}</p>}
   <article class="prose"><Content /></article>
   {real(d.url) && (
-    <p><a class="btn" href={d.url} target="_blank" rel="noopener">View source →</a></p>
+    <p><a class="btn" href={d.url.startsWith("/") ? withBase(d.url) : d.url} target="_blank" rel="noopener">{isDoc(d.url) ? "View document →" : "View source →"}</a></p>
   )}
 </Base>

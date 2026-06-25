@@ -3,9 +3,20 @@ import Base from "../../layouts/Base.astro";
 import { withBase } from "../../lib/site";
 import { getCollection } from "astro:content";
 
+const ts = (v?: string) => {
+  const t = new Date(String(v ?? "")).getTime();
+  return isNaN(t) ? 0 : t;
+};
+const fmtDate = (v?: string) => {
+  if (!v) return "";
+  const dt = new Date(v);
+  return isNaN(dt.getTime())
+    ? String(v)
+    : dt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+};
 const items = (await getCollection("writing"))
   .filter((w) => !w.data.unlisted)
-  .sort((a, b) => String(b.data.date ?? "").localeCompare(String(a.data.date ?? "")));
+  .sort((a, b) => ts(b.data.date) - ts(a.data.date));
 const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
 ---
 <Base title="Writing" description="Articles and analysis by Denis Zhurba.">
@@ -17,7 +28,7 @@ const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
         <div class="row">
           <a class="t" href={withBase(`/writing/${a.id}`)}>{a.data.title}</a>
           <span class="d">
-            {a.data.status === "draft" ? "Draft" : (real(a.data.external_url) ? a.data.publication : a.data.date)}
+            {a.data.status === "draft" ? "Draft" : (real(a.data.external_url) ? a.data.publication : fmtDate(a.data.date))}
           </span>
         </div>
         {a.data.summary && <div class="note">{a.data.summary}</div>}
