@@ -5,6 +5,7 @@ summary: "A five-minute companion to the AI/ML CRM article: write the push copy,
 publication: Self
 tags: [ai, ml, crm, interactive, game]
 featured: false
+unlisted: true
 ---
 
 A hands-on companion to [the AI/ML CRM article](/writing/ai-ml-crm-2026/). You play the comms stack across three stages — write the copy, tune the ranker, and balance the week — against a transparent in-browser reward model, and see how your policy stacks up against the production one.

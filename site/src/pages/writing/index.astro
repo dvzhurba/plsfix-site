@@ -3,9 +3,9 @@ import Base from "../../layouts/Base.astro";
 import { withBase } from "../../lib/site";
 import { getCollection } from "astro:content";
 
-const items = (await getCollection("writing")).sort((a, b) =>
-  String(b.data.date ?? "").localeCompare(String(a.data.date ?? "")),
-);
+const items = (await getCollection("writing"))
+  .filter((w) => !w.data.unlisted)
+  .sort((a, b) => String(b.data.date ?? "").localeCompare(String(a.data.date ?? "")));
 const real = (h?: string) => typeof h === "string" && /^https?:\/\//.test(h);
 ---
 <Base title="Writing" description="Articles and analysis by Denis Zhurba.">

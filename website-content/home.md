@@ -16,11 +16,8 @@ selected_writing:
   - sostav-pm-skills
 play:
   - title: "CRM in 2026"
-    desc: "An explorable article — poke the charts, run the simulator."
+    desc: "An explorable article with live charts and a comms simulator — plus a game where you try to beat the machine."
     href: /read/ai-ml-crm-2026/
-  - title: "Run the Comms Stack"
-    desc: "A playable model of an AI comms engine — see if you can beat the machine."
-    href: /read/run-the-comms-stack/
 about: "Nine years building AI/ML products — 0→1 to 100M+ users — and the teams and strategy behind them."
 ctas:
   - { label: "See the work", href: /work }
