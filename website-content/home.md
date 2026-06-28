@@ -15,9 +15,9 @@ selected_writing:
   - hn-health-fitness
   - sostav-pm-skills
 play:
-  - title: "CRM in 2026"
-    desc: "An explorable article with live charts and a comms simulator — plus a game where you try to beat the machine."
-    href: /read/ai-ml-crm-2026/
+  - title: "Run the Comms Stack"
+    desc: "A five-minute game companion to my CRM article — write the push copy, tune the ranker, and balance a week of sends against a live reward model, then see if you can beat the machine."
+    href: /read/run-the-comms-stack/
 about: "Nine years building AI/ML products — 0→1 to 100M+ users — and the teams and strategy behind them."
 ctas:
   - { label: "See the work", href: /work }
