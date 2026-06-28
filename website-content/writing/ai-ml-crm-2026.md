@@ -24,36 +24,14 @@ One distinction runs through the whole thing: the AI/ML in a comms stack isn't o
 Before any architecture debate, settle the envelope. These are the bands mature CRM programmes at scale operate inside — each anchored to a published result, not a vendor promise. The headroom is narrower than the decks suggest.
 
 <figure class="fig">
-<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The achievable bands for AI/ML-driven CRM: incremental lift on a global control group of 1 to 3 percent, unsubscribe rate under 1 percent, engagement-rate lift of 8 to 15 percent, and volume cut of 20 to 30 percent, each marked against a published result">
-  <text x="24" y="30" style="font-size:13px;fill:var(--ink);font-weight:600">Incremental lift on GCG</text>
-  <text x="656" y="30" text-anchor="end" style="font-family:var(--mono);font-size:13px;fill:var(--accent);font-weight:700">1–3%</text>
-  <rect x="24" y="40" width="632" height="16" rx="8" style="fill:var(--soft);stroke:var(--line)"/>
-  <rect x="182" y="40" width="316" height="16" rx="8" style="fill:var(--accent);fill-opacity:.85"/>
-  <line x1="498" y1="36" x2="498" y2="60" style="stroke:var(--ink);stroke-width:1.5"/>
-  <text x="498" y="74" text-anchor="middle" style="font-size:10px;fill:var(--faint)">Pinterest +3%</text>
-  <text x="24" y="98" style="font-size:13px;fill:var(--ink);font-weight:600">Unsubscribe rate</text>
-  <text x="656" y="98" text-anchor="end" style="font-family:var(--mono);font-size:13px;fill:var(--accent);font-weight:700">under 1%</text>
-  <rect x="24" y="108" width="632" height="16" rx="8" style="fill:var(--soft);stroke:var(--line)"/>
-  <rect x="77" y="108" width="105" height="16" rx="8" style="fill:var(--accent);fill-opacity:.85"/>
-  <line x1="551" y1="104" x2="551" y2="128" style="stroke:var(--ink);stroke-width:1.5"/>
-  <text x="551" y="142" text-anchor="middle" style="font-size:10px;fill:var(--faint)">1% ceiling</text>
-  <text x="24" y="166" style="font-size:13px;fill:var(--ink);font-weight:600">Engagement lift (content + send-time)</text>
-  <text x="656" y="166" text-anchor="end" style="font-family:var(--mono);font-size:13px;fill:var(--accent);font-weight:700">8–15%</text>
-  <rect x="24" y="176" width="632" height="16" rx="8" style="fill:var(--soft);stroke:var(--line)"/>
-  <rect x="277" y="176" width="221" height="16" rx="8" style="fill:var(--accent);fill-opacity:.85"/>
-  <line x1="276" y1="172" x2="276" y2="196" style="stroke:var(--ink);stroke-width:1.5"/>
-  <text x="238" y="210" text-anchor="middle" style="font-size:10px;fill:var(--faint)">Twitter +7.96%</text>
-  <line x1="469" y1="172" x2="469" y2="196" style="stroke:var(--ink);stroke-width:1.5"/>
-  <text x="507" y="210" text-anchor="middle" style="font-size:10px;fill:var(--faint)">Kuaishou +14.08%</text>
-  <text x="24" y="234" style="font-size:13px;fill:var(--ink);font-weight:600">Volume cut at parity engagement</text>
-  <text x="656" y="234" text-anchor="end" style="font-family:var(--mono);font-size:13px;fill:var(--accent);font-weight:700">20–30%</text>
-  <rect x="24" y="244" width="632" height="16" rx="8" style="fill:var(--soft);stroke:var(--line)"/>
-  <rect x="385" y="244" width="181" height="16" rx="8" style="fill:var(--accent);fill-opacity:.85"/>
-  <line x1="129" y1="240" x2="129" y2="264" style="stroke:var(--ink);stroke-width:1.5"/>
-  <text x="129" y="278" text-anchor="middle" style="font-size:10px;fill:var(--faint)">Twitter −5.79%</text>
-  <line x1="457" y1="240" x2="457" y2="264" style="stroke:var(--ink);stroke-width:1.5"/>
-  <text x="457" y="278" text-anchor="middle" style="font-size:10px;fill:var(--faint)">Pinterest −24%</text>
-</svg>
+<div class="viz">
+<div class="bands">
+<div class="band"><div class="bandhead"><span class="bandname">Incremental lift on GCG</span><span class="bandval">1–3%</span></div><div class="track"><div class="fill" style="left:25%;width:50%"></div><div class="tick" style="left:75%"><span>Pinterest +3%</span></div></div></div>
+<div class="band"><div class="bandhead"><span class="bandname">Unsubscribe rate</span><span class="bandval">under 1%</span></div><div class="track"><div class="fill" style="left:8.3%;width:16.7%"></div><div class="tick" style="left:83.3%"><span>1% ceiling</span></div></div></div>
+<div class="band"><div class="bandhead"><span class="bandname">Engagement lift (content + send-time)</span><span class="bandval">8–15%</span></div><div class="track"><div class="fill" style="left:40%;width:35%"></div><div class="tick" style="left:39.8%"><span>Twitter +7.96%</span></div><div class="tick" style="left:70.4%"><span>Kuaishou +14.08%</span></div></div></div>
+<div class="band"><div class="bandhead"><span class="bandname">Volume cut at parity engagement</span><span class="bandval">20–30%</span></div><div class="track"><div class="fill" style="left:57.1%;width:28.6%"></div><div class="tick" style="left:16.5%"><span>Twitter −5.79%</span></div><div class="tick" style="left:68.6%"><span>Pinterest −24%</span></div></div></div>
+</div>
+</div>
 <figcaption>Where mature CRM at scale actually lands on four headline metrics. Bands are practitioner ranges synthesised from the cited literature; ticks mark specific published results — Pinterest NEP (KDD 2018), Twitter/O'Brien (arXiv 2202.08812), Kuaishou PushGen (WSDM 2026).</figcaption>
 </figure>
 
@@ -62,32 +40,14 @@ Four numbers frame the whole thing. **Incremental business-metric lift: 1–3%**
 The arithmetic that turns this into a case is straightforward. On an illustrative platform — 50M MAU, $1B annual revenue — 1–3% incremental on the holdout is $10–30M a year at maturity. The programme that delivers it runs maybe 12–25 FTEs plus infrastructure — call it $3–5M fully loaded. Base case: a 3–6× annual return, and higher once you count the paid re-acquisition you no longer pay for (Adobe pegs personalization at 1.7× faster revenue growth and 2× lifetime value). The line that gets the least attention is the volume cut: most mature systems over-send by a quarter to a third, and reclaiming that attention budget pays better than squeezing more clicks out of each retained send. The results that anchor the bands:
 
 <figure class="fig">
-<svg viewBox="0 0 680 232" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four published CRM results: Pinterest NEP cut notification volume 24 percent at plus 31 percent CTR, and lifted DAU 3 percent on mixed channels; Twitter's send-or-not filter cut sends 5.79 percent at plus 7.96 percent open rate; Kuaishou PushGen lifted CTR 14.08 percent">
-  <rect x="30" y="16" width="300" height="96" rx="12" style="fill:var(--soft);stroke:var(--line)"/>
-  <rect x="33" y="20" width="3" height="88" rx="1.5" style="fill:var(--accent)"/>
-  <text x="52" y="42" style="font-family:var(--mono);font-size:11px;fill:var(--faint)">PINTEREST NEP · EMAIL-ONLY</text>
-  <text x="52" y="74" style="font-size:24px;font-weight:800;fill:var(--accent)">−24%</text>
-  <text x="52" y="94" style="font-size:12px;fill:var(--muted)">notification volume, at +31% CTR</text>
-  <text x="52" y="106" style="font-family:var(--mono);font-size:10px;fill:var(--faint)">KDD 2018</text>
-  <rect x="350" y="16" width="300" height="96" rx="12" style="fill:var(--soft);stroke:var(--line)"/>
-  <rect x="353" y="20" width="3" height="88" rx="1.5" style="fill:var(--accent)"/>
-  <text x="372" y="42" style="font-family:var(--mono);font-size:11px;fill:var(--faint)">PINTEREST NEP · MIXED</text>
-  <text x="372" y="74" style="font-size:24px;font-weight:800;fill:var(--accent)">+3%</text>
-  <text x="372" y="94" style="font-size:12px;fill:var(--muted)">DAU, with +10–21% email/push CTR</text>
-  <text x="372" y="106" style="font-family:var(--mono);font-size:10px;fill:var(--faint)">KDD 2018</text>
-  <rect x="30" y="120" width="300" height="96" rx="12" style="fill:var(--soft);stroke:var(--line)"/>
-  <rect x="33" y="124" width="3" height="88" rx="1.5" style="fill:var(--accent)"/>
-  <text x="52" y="146" style="font-family:var(--mono);font-size:11px;fill:var(--faint)">TWITTER · O'BRIEN</text>
-  <text x="52" y="178" style="font-size:24px;font-weight:800;fill:var(--accent)">−5.79%</text>
-  <text x="52" y="198" style="font-size:12px;fill:var(--muted)">sends, at +7.96% open rate, +0.20% DAU</text>
-  <text x="52" y="210" style="font-family:var(--mono);font-size:10px;fill:var(--faint)">arXiv 2202.08812</text>
-  <rect x="350" y="120" width="300" height="96" rx="12" style="fill:var(--soft);stroke:var(--line)"/>
-  <rect x="353" y="124" width="3" height="88" rx="1.5" style="fill:var(--accent)"/>
-  <text x="372" y="146" style="font-family:var(--mono);font-size:11px;fill:var(--faint)">KUAISHOU · PUSHGEN</text>
-  <text x="372" y="178" style="font-size:24px;font-weight:800;fill:var(--accent)">+14.08%</text>
-  <text x="372" y="198" style="font-size:12px;fill:var(--muted)">CTR on replaced pushes; beat-rate 44→83%</text>
-  <text x="372" y="210" style="font-family:var(--mono);font-size:10px;fill:var(--faint)">WSDM 2026</text>
-</svg>
+<div class="viz">
+<div class="statgrid">
+<div class="statcard"><div class="src">Pinterest NEP · email-only</div><div class="big">−24%</div><div class="desc">notification volume, at +31% CTR</div><div class="cite">KDD 2018</div></div>
+<div class="statcard"><div class="src">Pinterest NEP · mixed</div><div class="big">+3%</div><div class="desc">DAU, with +10–21% email/push CTR</div><div class="cite">KDD 2018</div></div>
+<div class="statcard"><div class="src">Twitter · O'Brien</div><div class="big">−5.79%</div><div class="desc">sends, at +7.96% open rate, +0.20% DAU</div><div class="cite">arXiv 2202.08812</div></div>
+<div class="statcard"><div class="src">Kuaishou · PushGen</div><div class="big">+14.08%</div><div class="desc">CTR on replaced pushes; beat-rate 44→83%</div><div class="cite">WSDM 2026</div></div>
+</div>
+</div>
 <figcaption>The public anchors for every band above. None of these numbers exists without a Global Control Group — the one piece of infrastructure that turns CRM from a vibes-driven function into a measurable one. Per eMarketer/TransUnion (July 2025), 52% of US marketers now run incrementality testing in some form.</figcaption>
 </figure>
 
@@ -98,38 +58,18 @@ Five GCG design choices are worth getting right early: *size* (1–5% — bigger
 Most CRM advice in the wild is written by people who work at large marketplaces, and it quietly assumes everyone else has the same shape. They don't. Two dimensions place your platform: *catalog size* (a neobank's eight products vs. a marketplace's millions of listings) and *signal volume per user* (rich daily telemetry vs. a sparse weekly visit).
 
 <figure class="fig">
-<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A two-by-two matrix placing CRM platforms by catalog size and signal volume per user: quadrant A LLM-first for neobanks, quadrant D full-stack for large marketplaces, quadrant C orchestration-first for Duolingo, quadrant B recommender-first for Netflix and Spotify">
-  <text x="22" y="200" transform="rotate(-90 22 200)" text-anchor="middle" style="font-family:var(--mono);font-size:11px;fill:var(--faint);letter-spacing:.08em">SIGNAL VOLUME / USER →</text>
-  <text x="362" y="410" text-anchor="middle" style="font-family:var(--mono);font-size:11px;fill:var(--faint);letter-spacing:.08em">CATALOG SIZE →</text>
-  <rect x="74" y="20" width="282" height="172" rx="12" style="fill:var(--soft);stroke:var(--accent);stroke-width:1.5"/>
-  <text x="96" y="52" style="font-family:var(--mono);font-size:11px;fill:var(--accent);letter-spacing:.06em">QUADRANT A</text>
-  <text x="96" y="82" style="font-size:18px;font-weight:700;fill:var(--ink)">LLM-first</text>
-  <text x="96" y="104" style="font-size:12px;fill:var(--muted)">Neobanks, fintech (Revolut)</text>
-  <text x="96" y="148" style="font-size:11px;fill:var(--faint)">Small catalog, dense signal — the LLM</text>
-  <text x="96" y="164" style="font-size:11px;fill:var(--faint)">reasons over the whole catalog.</text>
-  <text x="96" y="180" style="font-size:11px;font-style:italic;fill:var(--faint)">Trap: a recommender you don't need.</text>
-  <rect x="366" y="20" width="282" height="172" rx="12" style="fill:var(--soft);stroke:var(--accent);stroke-width:1.5"/>
-  <text x="388" y="52" style="font-family:var(--mono);font-size:11px;fill:var(--accent);letter-spacing:.06em">QUADRANT D</text>
-  <text x="388" y="82" style="font-size:18px;font-weight:700;fill:var(--ink)">Full stack</text>
-  <text x="388" y="104" style="font-size:12px;fill:var(--muted)">Large marketplaces, social</text>
-  <text x="388" y="148" style="font-size:11px;fill:var(--faint)">Every layer hard and composed —</text>
-  <text x="388" y="164" style="font-size:11px;fill:var(--faint)">most CRM writing describes this shape.</text>
-  <text x="388" y="180" style="font-size:11px;font-style:italic;fill:var(--faint)">Trap: D-advice rarely transfers down.</text>
-  <rect x="74" y="206" width="282" height="172" rx="12" style="fill:var(--soft);stroke:var(--accent);stroke-width:1.5"/>
-  <text x="96" y="238" style="font-family:var(--mono);font-size:11px;fill:var(--accent);letter-spacing:.06em">QUADRANT C</text>
-  <text x="96" y="268" style="font-size:18px;font-weight:700;fill:var(--ink)">Orchestration-first</text>
-  <text x="96" y="290" style="font-size:12px;fill:var(--muted)">Duolingo</text>
-  <text x="96" y="334" style="font-size:11px;fill:var(--faint)">Few message types; cadence and</text>
-  <text x="96" y="350" style="font-size:11px;fill:var(--faint)">journey are the whole game.</text>
-  <text x="96" y="366" style="font-size:11px;font-style:italic;fill:var(--faint)">Trap: over-investing in LLM copy.</text>
-  <rect x="366" y="206" width="282" height="172" rx="12" style="fill:var(--soft);stroke:var(--accent);stroke-width:1.5"/>
-  <text x="388" y="238" style="font-family:var(--mono);font-size:11px;fill:var(--accent);letter-spacing:.06em">QUADRANT B</text>
-  <text x="388" y="268" style="font-size:18px;font-weight:700;fill:var(--ink)">Recommender-first</text>
-  <text x="388" y="290" style="font-size:12px;fill:var(--muted)">Netflix, Spotify</text>
-  <text x="388" y="334" style="font-size:11px;fill:var(--faint)">CRM wraps the recommender's</text>
-  <text x="388" y="350" style="font-size:11px;fill:var(--faint)">scores in copy — a delivery layer.</text>
-  <text x="388" y="366" style="font-size:11px;font-style:italic;fill:var(--faint)">Trap: duplicating the recommender.</text>
-</svg>
+<div class="viz">
+<div class="quadframe">
+<span class="ax-y">Signal volume / user →</span>
+<div class="quadgrid">
+<div class="quad"><div class="ql">Quadrant A</div><div class="qn">LLM-first</div><div class="qx">Neobanks, fintech (Revolut)</div><div class="qd">Small catalog, dense signal — the LLM reads recent activity and reasons over the whole catalog in one prompt.</div><div class="qt">Trap: building a recommender you don't need.</div></div>
+<div class="quad"><div class="ql">Quadrant D</div><div class="qn">Full stack</div><div class="qx">Large marketplaces, social</div><div class="qd">Every layer is independently hard and must be composed. Most published CRM writing describes this shape.</div><div class="qt">Trap: assuming D-advice transfers down to A/B/C.</div></div>
+<div class="quad"><div class="ql">Quadrant C</div><div class="qn">Orchestration-first</div><div class="qx">Duolingo</div><div class="qd">Few message types, but cadence and journey are the whole game — balancer, send-time, suppression.</div><div class="qt">Trap: over-investing in LLM copy variants.</div></div>
+<div class="quad"><div class="ql">Quadrant B</div><div class="qn">Recommender-first</div><div class="qx">Netflix, Spotify</div><div class="qd">Millions of items; CRM wraps the recommender's scores in copy — a delivery layer on existing personalization.</div><div class="qt">Trap: re-deriving personalisation you already have.</div></div>
+</div>
+<span class="ax-x">Catalog size →</span>
+</div>
+</div>
 <figcaption>Quadrant-D systems get written about most — but the advice only transfers if you're actually in D. Run a Quadrant-A platform and spend two quarters building a recommender and you've wasted them; run Quadrant-C and pour effort into LLM copy variants and you optimised the wrong layer.</figcaption>
 </figure>
 
@@ -138,23 +78,11 @@ Most CRM advice in the wild is written by people who work at large marketplaces,
 > **The loop.** A buyer searches a marketplace for a road bike under €1,500 and does not buy. An hour later a push surfaces three similar bikes and a pannier rack; the next day an in-app message — the seller dropped the price, with a code for free delivery — and the buyer converts. None of it is a blast. Behind it is a loop: trigger → modeling → content → orchestration → placement → feedback, and every serious CRM platform runs a version of it.
 
 <figure class="fig">
-<svg viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One message end to end, five stages: content, then audience, then orchestration, then placement, then feedback; the audience stage is highlighted as the biggest hidden lift">
-  <defs><marker id="lc-ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" style="fill:none;stroke:var(--faint);stroke-width:1.4"/></marker></defs>
-  <rect x="16" y="34" width="116" height="52" rx="9" style="fill:var(--soft);stroke:var(--line)"/>
-  <text x="74" y="65" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--ink)">Content</text>
-  <line x1="134" y1="60" x2="146" y2="60" style="stroke:var(--faint);stroke-width:1.4" marker-end="url(#lc-ar)"/>
-  <rect x="148" y="34" width="116" height="52" rx="9" style="fill:var(--accent);fill-opacity:.1;stroke:var(--accent);stroke-width:2"/>
-  <text x="206" y="65" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--accent)">Audience</text>
-  <line x1="266" y1="60" x2="278" y2="60" style="stroke:var(--faint);stroke-width:1.4" marker-end="url(#lc-ar)"/>
-  <rect x="280" y="34" width="116" height="52" rx="9" style="fill:var(--soft);stroke:var(--line)"/>
-  <text x="338" y="65" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--ink)">Orchestration</text>
-  <line x1="398" y1="60" x2="410" y2="60" style="stroke:var(--faint);stroke-width:1.4" marker-end="url(#lc-ar)"/>
-  <rect x="412" y="34" width="116" height="52" rx="9" style="fill:var(--soft);stroke:var(--line)"/>
-  <text x="470" y="65" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--ink)">Placement</text>
-  <line x1="530" y1="60" x2="542" y2="60" style="stroke:var(--faint);stroke-width:1.4" marker-end="url(#lc-ar)"/>
-  <rect x="544" y="34" width="116" height="52" rx="9" style="fill:var(--soft);stroke:var(--line)"/>
-  <text x="602" y="65" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--ink)">Feedback</text>
-</svg>
+<div class="viz">
+<div class="lifeflow">
+<div class="stage">Content</div><div class="arrow">→</div><div class="stage hot">Audience</div><div class="arrow">→</div><div class="stage">Orchestration</div><div class="arrow">→</div><div class="stage">Placement</div><div class="arrow">→</div><div class="stage">Feedback</div>
+</div>
+</div>
 <figcaption>One message, end to end. Each stage compounds with the others rather than substituting for them — and the biggest surprise lift usually hides in the audience stage, the one most established programmes have never done the work on.</figcaption>
 </figure>
 
