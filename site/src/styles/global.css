@@ -7,6 +7,10 @@
   --soft: #f6f7f9;
   --accent: #1f4ed8;
   --accent-ink: #1736a8;
+  --good: #0a8f5b;
+  --good-soft: #e7f6ee;
+  --violet: #6d3fd6;
+  --violet-soft: #f0ebfd;
   --maxw: 720px;
   --serif: ui-serif, Georgia, "Times New Roman", serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -16,6 +20,7 @@
   :root {
     --ink: #e8eaed; --paper: #0f1115; --muted: #9aa3b2; --faint: #6b7280;
     --line: #262a31; --soft: #171a20; --accent: #7c9bff; --accent-ink: #a9bdff;
+    --good: #5fd6a0; --good-soft: #13271f; --violet: #b9a3ff; --violet-soft: #1e1932;
   }
 }
 * { box-sizing: border-box; }
@@ -170,6 +175,20 @@ main { padding: 40px 0 64px; }
   .prose .quadframe .quadgrid { grid-template-columns: 1fr; }
   .prose .lifeflow { flex-direction: column; gap: 6px; }
   .prose .lifeflow .arrow { justify-content: center; transform: rotate(90deg); }
+}
+
+/* lifecycle stage detail cards (old way / new way / achievable / next) */
+.prose .stage-detail { display: grid; gap: 14px; margin: 22px 0; }
+.prose .stagecard { background: var(--soft); border: 1px solid var(--line); border-radius: 12px; padding: 6px 18px 10px; }
+.prose .stagecard .sh { font-family: var(--mono); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); padding: 13px 0 4px; }
+.prose .stagecard .lrow { display: flex; gap: 16px; padding: 10px 0; border-top: 1px solid var(--line); }
+.prose .stagecard .k { flex: 0 0 88px; font-family: var(--mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--faint); padding-top: 4px; }
+.prose .stagecard .v { flex: 1; font-size: 0.9rem; line-height: 1.55; color: var(--ink); }
+.prose .ach { display: inline-block; background: var(--good-soft); color: var(--good); border: 1px solid color-mix(in srgb, var(--good) 32%, transparent); border-radius: 7px; padding: 3px 10px; font-size: 0.86rem; font-weight: 500; }
+.prose .nextpill { display: inline-block; background: var(--violet-soft); color: var(--violet); border: 1px solid color-mix(in srgb, var(--violet) 32%, transparent); border-radius: 7px; padding: 3px 10px; font-size: 0.86rem; font-weight: 500; }
+@media (max-width: 560px) {
+  .prose .stagecard .lrow { flex-direction: column; gap: 3px; }
+  .prose .stagecard .k { padding-top: 0; }
 }
 
 /* footer */

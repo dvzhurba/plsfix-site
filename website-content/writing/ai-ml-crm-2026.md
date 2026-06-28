@@ -88,40 +88,13 @@ Most CRM advice in the wild is written by people who work at large marketplaces,
 
 For each stage: the old way, the new way that actually moves the metrics, what's honestly achievable, and what's coming next.
 
-### Content
-
-- **Old way:** a copy team writes a few headline templates per campaign, rotated quarterly, picked by post-launch CTR.
-- **New way:** LLM variants under category control (Suspense / Emotion / Practical / Plot framings) → a pairwise reward model — a ~100–300M-param BERT-class encoder, retrained weekly, ~1ms/pair — selects the winner pre-launch (selection only, no RL on raw CTR), with multi-task scoring on OR, CTR, business action, and complaints.
-- **Achievable:** high-single to low-double-digit OR lift; headline half-life moves from 60–120 days to 200+.
-- **What's next:** one-to-one copy generated per user in real time, with compliance guardrails keeping it on-brand and factual.
-
-### Audience
-
-- **Old way:** rule-based SQL segments, maintained by hand, measured by attributed conversion with no causal check.
-- **New way:** behavioral micro-segmentation → uplift modeling (S-, T-, and X-learner architectures) that ranks by conditional average treatment effect, not engagement probability, separating persuadables from always- and never-takers → real-time post-conversion suppression via streaming (Kafka/Kinesis).
-- **Achievable:** 0.15–0.30% incremental lift on GCG plus 5–10% volume headroom — the biggest hidden lift, because few teams have done it.
-- **What's next:** embedded models making the send/no-send call per user at the moment of delivery, not in last night's batch.
-
-### Orchestration
-
-- **Old way:** a FIFO queue with one flat per-user daily cap set by gut; the same cap for power users and seasonal users.
-- **New way:** a per-user notification budget (Pinterest NEP) · pairwise expected-regret ranking · an RL "should I send at all?" filter · send-time optimization · diversity-aware reranking — one budget, one balancer, one decision point.
-- **Achievable:** low-tenths-of-a-percent lift; daily sends 1.5→1.7+ without breaching the UR ceiling; 5–10% volume headroom.
-- **What's next:** RL that optimizes for long-term retention and LTV instead of the next click — plus user-facing "set your own frequency" controls.
-
-### Placement
-
-- **Old way:** push dumps the user on the homepage; they drop off in the 5–10s window before they find what the message implied.
-- **New way:** personalized landing with pre-applied filters (deep links) · a persistent inbox / notification center · channel cascading from highest-utility channel down.
-- **Achievable:** a few points of conversion-given-tap per surface — and the inbox is the only surface that survives revoked push permissions.
-- **What's next:** personalized modules inside the home feed, AR/voice notifications, and buying straight from the notification.
-
-### Feedback
-
-- **Old way:** teams eyeball OR/CTR after a send and move on; data lives in disconnected dashboards; drop reasons unlogged.
-- **New way:** every message logged against the GCG with the multi-metric stack · score-on-drop logging for kept *and* dropped candidates · desired-vs-actual send-time diff logging.
-- **Achievable:** no direct lift — it produces measurable lift. Rigorous feedback ships changes confidently instead of hopefully.
-- **What's next:** self-tuning loops — the reward model retrains on today's sends by tonight, so the policy improves daily without a release.
+<div class="stage-detail">
+<div class="stagecard"><div class="sh">4.1 · Content</div><div class="lrow"><span class="k">Old way</span><span class="v">A copy team writes a few headline templates per campaign, rotated quarterly, picked by post-launch CTR.</span></div><div class="lrow"><span class="k">New way</span><span class="v">LLM variants under category control (Suspense / Emotion / Practical / Plot framings) → a pairwise reward model — a ~100–300M-param BERT-class encoder, retrained weekly, ~1ms/pair — selects the winner pre-launch (selection only, no RL on raw CTR), with multi-task scoring on OR, CTR, business action, and complaints.</span></div><div class="lrow"><span class="k">Achievable</span><span class="v"><span class="ach">High-single to low-double-digit OR lift; headline half-life moves from 60–120 days to 200+.</span></span></div><div class="lrow"><span class="k">What's next</span><span class="v"><span class="nextpill">One-to-one copy generated per user in real time, with compliance guardrails keeping it on-brand and factual.</span></span></div></div>
+<div class="stagecard"><div class="sh">4.2 · Audience</div><div class="lrow"><span class="k">Old way</span><span class="v">Rule-based SQL segments, maintained by hand, measured by attributed conversion with no causal check.</span></div><div class="lrow"><span class="k">New way</span><span class="v">Behavioral micro-segmentation → uplift modeling (S-, T-, and X-learner architectures) that ranks by conditional average treatment effect, not engagement probability, separating persuadables from always- and never-takers → real-time post-conversion suppression via streaming (Kafka/Kinesis).</span></div><div class="lrow"><span class="k">Achievable</span><span class="v"><span class="ach">0.15–0.30% incremental lift on GCG plus 5–10% volume headroom — the biggest hidden lift, because few teams have done it.</span></span></div><div class="lrow"><span class="k">What's next</span><span class="v"><span class="nextpill">Embedded models making the send/no-send call per user at the moment of delivery, not in last night's batch.</span></span></div></div>
+<div class="stagecard"><div class="sh">4.3 · Orchestration</div><div class="lrow"><span class="k">Old way</span><span class="v">A FIFO queue with one flat per-user daily cap set by gut; the same cap for power users and seasonal users.</span></div><div class="lrow"><span class="k">New way</span><span class="v">A per-user notification budget (Pinterest NEP) · pairwise expected-regret ranking · an RL "should I send at all?" filter · send-time optimization · diversity-aware reranking — one budget, one balancer, one decision point.</span></div><div class="lrow"><span class="k">Achievable</span><span class="v"><span class="ach">Low-tenths-of-a-percent lift; daily sends 1.5→1.7+ without breaching the UR ceiling; 5–10% volume headroom.</span></span></div><div class="lrow"><span class="k">What's next</span><span class="v"><span class="nextpill">RL that optimizes for long-term retention and LTV instead of the next click — plus user-facing "set your own frequency" controls.</span></span></div></div>
+<div class="stagecard"><div class="sh">4.4 · Placement</div><div class="lrow"><span class="k">Old way</span><span class="v">Push dumps the user on the homepage; they drop off in the 5–10s window before they find what the message implied.</span></div><div class="lrow"><span class="k">New way</span><span class="v">Personalized landing with pre-applied filters (deep links) · a persistent inbox / notification center · channel cascading from highest-utility channel down.</span></div><div class="lrow"><span class="k">Achievable</span><span class="v"><span class="ach">A few points of conversion-given-tap per surface — and the inbox is the only surface that survives revoked push permissions.</span></span></div><div class="lrow"><span class="k">What's next</span><span class="v"><span class="nextpill">Personalized modules inside the home feed, AR/voice notifications, and buying straight from the notification.</span></span></div></div>
+<div class="stagecard"><div class="sh">4.5 · Feedback</div><div class="lrow"><span class="k">Old way</span><span class="v">Teams eyeball OR/CTR after a send and move on; data lives in disconnected dashboards; drop reasons unlogged.</span></div><div class="lrow"><span class="k">New way</span><span class="v">Every message logged against the GCG with the multi-metric stack · score-on-drop logging for kept and dropped candidates · desired-vs-actual send-time diff logging.</span></div><div class="lrow"><span class="k">Achievable</span><span class="v"><span class="ach">No direct lift — it produces measurable lift. Rigorous feedback ships changes confidently instead of hopefully.</span></span></div><div class="lrow"><span class="k">What's next</span><span class="v"><span class="nextpill">Self-tuning loops — the reward model retrains on today's sends by tonight, so the policy improves daily without a release.</span></span></div></div>
+</div>
 
 Orchestration is where the volume-headroom story lives. Push a per-user send budget without the mechanics — uplift targeting, send-time optimization, reward-model content — and you break the unsubscribe ceiling while lift actually falls. Layer the mechanics and you buy headroom to send more at lower cost. That's not a quirk of the model; that's the whole argument.
 
