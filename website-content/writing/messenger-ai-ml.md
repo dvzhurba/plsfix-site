@@ -103,4 +103,4 @@ Two functions are non-negotiable and invisible when they work — **fraud detect
 
 **The line you do not cross:** do not automate the human. A messenger that replies on the seller's behalf, or floods buyers with bot-perfect copy, destroys the one thing that makes a stranger hand over cash — the sense that there is a real person on the other side. Over-automation reads as a scam even when it is not. AI removes friction — faster replies, clearer offers, instant answers, safety — and the platform stays out of the way; the model drafts, the person decides. That is the whole discipline: a stack of models judged on one outcome, whether more strangers safely transacted.
 
-*Companion to my account of [what AI/ML CRM can actually do at scale](/read/ai-ml-crm-2026/) — the same discipline, applied to the surface where the deal is closed rather than triggered.*
+*Companion to my account of [what AI/ML CRM can actually do at scale](/writing/ai-ml-crm-2026/) — the same discipline, applied to the surface where the deal is closed rather than triggered.*
