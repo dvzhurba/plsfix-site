@@ -1,0 +1,97 @@
+---
+import Base from "../layouts/Base.astro";
+import { withBase } from "../lib/site";
+
+const email = "dzhurba@plsfix.co.uk";
+const linkedin = "https://www.linkedin.com/in/deniszhurba/";
+
+const talkSubject = encodeURIComponent('Speaker: "Send less, earn more" — Denis Zhurba');
+const articleSubject = encodeURIComponent("Contributor pitch — the communications investment case");
+
+const bioShort =
+  "Denis Zhurba is a product leader specialising in AI/ML at scale — from 0→1 products to systems serving 100M+ users. He led AI-driven communications at Avito, a 60M-user marketplace, founded an AI sports-coaching startup acquired by a PE roll-up, and holds an MBA from London Business School.";
+const bioLong =
+  "Denis Zhurba is a product leader with nine years building AI/ML products, from 0→1 launches to systems serving 100M+ users. Most recently he led communications and buyer-engagement at Avito, one of the world’s largest online marketplaces (60M+ monthly users, billions of messages a month), where he authored and defended the board-approved investment case to rebuild communications around machine learning — ranking, uplift modelling, and LLM-generated content selected by a reward model — and served as GenAI Lead for marketing and communications. Earlier he founded BOXR, an AI sports-coaching app built out of the London Business School incubator and acquired by a PE roll-up, and led strategy and go-to-market for VK’s Marusya smart-speaker line. He writes and speaks on ML-driven communications and holds an MBA from London Business School.";
+---
+<Base title="For editors" noindex={true}>
+  <div class="pitch">
+    <p class="section-label">For editors &amp; programme chairs</p>
+    <h1>Denis Zhurba</h1>
+    <p class="positioning">Product leader — built AI-driven communications at 60M-user, billions-of-messages-a-month scale.</p>
+    <p class="contactline">
+      <a href={`mailto:${email}`}>{email}</a> · <a href={linkedin} target="_blank" rel="noopener">LinkedIn</a> · based in Dubai, available remotely and across the UK/UAE
+    </p>
+
+    <div class="section-label">On offer</div>
+    <div class="offer-grid">
+      <div class="card offer">
+        <span class="badge">Exclusive · unpublished</span>
+        <h3>The communications investment case</h3>
+        <p class="meta">Authored analysis · ~3,100 words · or an interview / Q&amp;A</p>
+        <p>What an AI-driven communications platform actually returns and what it takes to build one: the published return envelope (Pinterest, Twitter, Kuaishou), the five-layer architecture, per-mechanism economics with stage gates and kill criteria, and five platform scenarios for where the case clears the bar — and where building it is a mistake.</p>
+        <div class="spacer"></div>
+        <p><a class="btn" href={withBase("/writing/communications-investment-case")}>Read the draft →</a></p>
+      </div>
+      <div class="card offer">
+        <span class="badge alt">Talk · 18 min</span>
+        <h3>“Send less, earn more”</h3>
+        <p class="meta">18-min talk · also 30-min + Q&amp;A or 45-min workshop</p>
+        <p>The real return envelope for ML communications, benchmarked against published production systems: the 1–3% incremental lift, the 20–30% of volume you can cut <em>while engagement rises</em>, and the scenarios where building it is the wrong call. Track fit: AI in production · Commercial AI &amp; ROI · MarTech/CRM · Product growth.</p>
+        <div class="spacer"></div>
+        <p><a class="btn secondary" href={`mailto:${email}?subject=${talkSubject}`}>Propose for your event →</a></p>
+      </div>
+    </div>
+
+    <div class="section-label">Why your readers will care</div>
+    <p class="lead">The angle: the returns from ML communications are real but <em>bounded</em> — and the bounds are published, so a proposal can be benchmarked against Pinterest, Twitter and Kuaishou instead of a vendor’s promise. Three takeaways a reader leaves with:</p>
+    <ul>
+      <li>The published return envelope for ML communications — and how to benchmark a vendor proposal against it.</li>
+      <li>Why the highest-return move at scale is usually to send <em>less</em>, and the architecture that makes that safe.</li>
+      <li>A decision rule: which platform scenarios justify the full build, and which should just instrument and wait.</li>
+    </ul>
+
+    <div class="section-label">Credibility</div>
+    <ul class="facts">
+      <li>Led AI/ML communications &amp; buyer-engagement at Avito (60M+ monthly users; billions of messages/month); GenAI Lead for marketing &amp; communications.</li>
+      <li>Authored and defended the board-approved investment case to rebuild comms around ML; grew the team 16 → 40+.</li>
+      <li>Founded BOXR, the UK’s most-downloaded boxing app (≈250k installs in six months); acquired by a PE roll-up.</li>
+      <li>MBA, London Business School. Earlier: strategy &amp; GTM for VK’s Marusya (100M-user platform); strategy at EY-Parthenon.</li>
+    </ul>
+    <p class="muted">
+      Already published &amp; spoken:
+      <a href="https://hackernoon.com/the-future-of-buyer-engagement-platforms-hyper-personalization-with-ai" target="_blank" rel="noopener">HackerNoon — buyer engagement</a>,
+      <a href="https://hackernoon.com/why-85percent-of-health-and-fitness-apps-never-reach-$1k-mtr-and-how-to-build-one-that-does" target="_blank" rel="noopener">HackerNoon — subscription apps</a>,
+      <a href="https://www.sostav.ru/blogs/273298/45082" target="_blank" rel="noopener">Sostav</a> ·
+      <a href={withBase("/talks")}>talks &amp; lectures</a> ·
+      <a href={withBase("/recognition")}>recognition</a> (LBS Launchpad Best Tech Innovation, HYPE Best AI Startups to Watch).
+    </p>
+
+    <div class="section-label">Bio &amp; assets</div>
+    <div class="bioblock">
+      <div class="biohead"><span class="lbl">Short — ≈50 words</span><button class="copybtn" data-copy="bio-short" type="button">Copy</button></div>
+      <p id="bio-short">{bioShort}</p>
+    </div>
+    <div class="bioblock">
+      <div class="biohead"><span class="lbl">Long — ≈150 words</span><button class="copybtn" data-copy="bio-long" type="button">Copy</button></div>
+      <p id="bio-long">{bioLong}</p>
+    </div>
+    <p class="muted">A high-resolution headshot and a one-page PDF are available on request — <a href={`mailto:${email}?subject=${articleSubject}`}>email me</a> and I’ll send them over.</p>
+
+    <div class="section-label">Contact</div>
+    <p>Email <a href={`mailto:${email}`}>{email}</a> or reach me on <a href={linkedin} target="_blank" rel="noopener">LinkedIn</a>. Happy to tailor the angle to your readership or run the piece as an interview / Q&amp;A. I usually reply within a day.</p>
+  </div>
+
+  <script is:inline>
+    document.querySelectorAll(".pitch .copybtn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const el = document.getElementById(btn.dataset.copy);
+        if (!el) return;
+        navigator.clipboard.writeText(el.innerText.trim()).then(() => {
+          const prev = btn.textContent;
+          btn.textContent = "Copied";
+          setTimeout(() => (btn.textContent = prev), 1300);
+        });
+      });
+    });
+  </script>
+</Base>

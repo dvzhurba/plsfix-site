@@ -191,6 +191,28 @@ main { padding: 40px 0 64px; }
   .prose .stagecard .k { padding-top: 0; }
 }
 
+/* ---- editor / publisher pitch page ---- */
+.pitch .contactline { color: var(--muted); margin: 0.4em 0 0; }
+.pitch .offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 4px; }
+@media (max-width: 640px) { .pitch .offer-grid { grid-template-columns: 1fr; } }
+.pitch .offer { display: flex; flex-direction: column; gap: 8px; }
+.pitch .offer h3 { margin: 2px 0 0; }
+.pitch .offer .meta { color: var(--faint); font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.01em; }
+.pitch .offer p { margin: 0; }
+.pitch .offer .spacer { flex: 1; }
+.pitch .badge { align-self: flex-start; font-family: var(--mono); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--paper)); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 999px; padding: 3px 10px; }
+.pitch .badge.alt { color: var(--violet); background: var(--violet-soft); border-color: color-mix(in srgb, var(--violet) 30%, transparent); }
+.pitch .facts { list-style: none; padding: 0; margin: 6px 0; }
+.pitch .facts li { padding: 9px 0 9px 22px; border-top: 1px solid var(--line); position: relative; color: var(--ink); }
+.pitch .facts li:first-child { border-top: none; }
+.pitch .facts li::before { content: "→"; position: absolute; left: 0; top: 9px; color: var(--accent); font-family: var(--mono); }
+.pitch .bioblock { border: 1px solid var(--line); border-radius: 12px; background: var(--soft); padding: 14px 16px; margin: 12px 0; }
+.pitch .biohead { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.pitch .biohead .lbl { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); }
+.pitch .bioblock p { margin: 0; font-size: 0.94rem; line-height: 1.6; }
+.pitch .copybtn { font: inherit; font-size: 0.78rem; color: var(--accent); background: var(--paper); border: 1px solid var(--line); border-radius: 7px; padding: 3px 10px; cursor: pointer; }
+.pitch .copybtn:hover { border-color: var(--accent); }
+
 /* footer */
 .site-foot { border-top: 1px solid var(--line); color: var(--muted); font-size: 0.86rem; }
 .site-foot .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding-top: 22px; padding-bottom: 40px; }

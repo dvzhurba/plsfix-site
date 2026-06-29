@@ -7,12 +7,14 @@ interface Props {
   description?: string;
   ogType?: string;
   jsonLd?: Record<string, unknown> | null;
+  noindex?: boolean;
 }
 const {
   title,
   description = SITE.description,
   ogType = "website",
   jsonLd = null,
+  noindex = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
@@ -34,7 +36,7 @@ const updated = new Date().toISOString().slice(0, 10);
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />

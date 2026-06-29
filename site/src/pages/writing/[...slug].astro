@@ -32,7 +32,7 @@ const articleLd = {
   ...(external ? { url: d.external_url } : {}),
 };
 ---
-<Base title={d.title} description={d.summary} ogType="article" jsonLd={articleLd}>
+<Base title={d.title} description={d.summary} ogType="article" jsonLd={articleLd} noindex={d.status === "draft"}>
   <p class="small"><a href={withBase("/writing")}>← Writing</a></p>
   <h1>{d.title}</h1>
   <p class="muted">

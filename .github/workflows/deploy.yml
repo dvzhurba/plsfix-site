@@ -46,6 +46,9 @@ jobs:
           # articles (see site/scripts/encrypt-private.mjs). If unset, the build
           # publishes them unprotected.
           STATICRYPT_PASSWORD: ${{ secrets.SITE_PASSWORD }}
+          # Optional separate password for the editor pitch page + the draft it
+          # links to (shared widely with editors). Falls back to SITE_PASSWORD.
+          EDITOR_PASSWORD: ${{ secrets.EDITOR_PASSWORD }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

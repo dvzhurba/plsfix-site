@@ -23,7 +23,14 @@ export default defineConfig({
   site: SITE,
   base: BASE,
   trailingSlash: 'ignore',
-  integrations: [sitemap()],
+  // Exclude the private, password-gated pages (editor pitch + unplaced draft).
+  integrations: [
+    sitemap({
+      filter: (page) =>
+        !/\/for-editors\/?$/.test(page) &&
+        !/\/writing\/communications-investment-case\/?$/.test(page),
+    }),
+  ],
   markdown: { remarkPlugins: [remarkStripHtmlComments] },
   // Content lives one level up in ../website-content (single source of truth),
   // so allow Vite to read outside the site/ project root.
