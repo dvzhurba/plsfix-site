@@ -41,6 +41,11 @@ jobs:
         working-directory: site
       - run: npm run build
         working-directory: site
+        env:
+          # Set repo secret SITE_PASSWORD to password-protect the self-published
+          # articles (see site/scripts/encrypt-private.mjs). If unset, the build
+          # publishes them unprotected.
+          STATICRYPT_PASSWORD: ${{ secrets.SITE_PASSWORD }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

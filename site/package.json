@@ -6,12 +6,16 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "node scripts/encrypt-private.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.2.0",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",
+    "astro": "^5.2.0",
     "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "staticrypt": "^3.5.4"
   }
 }
