@@ -46,6 +46,7 @@ for (const file of readdirSync(writingDir)) {
 targets.push(path.join(dist, "read", "run-the-comms-stack", "index.html"));
 
 const bin = path.join(siteRoot, "node_modules", ".bin", "staticrypt");
+const template = path.join(here, "staticrypt-template.html"); // site-styled prompt
 let count = 0;
 for (const file of targets) {
   if (!existsSync(file)) {
@@ -62,11 +63,12 @@ for (const file of targets) {
       "-c", "false",
       "--short",
       "--remember", "30",
-      "--template-title", "plsfix.co.uk — private",
-      "--template-instructions", "This piece is private. Enter the password to read it.",
+      "--template", template,
+      "--template-title", "This piece is private",
+      "--template-instructions", "Enter the password to read it.",
       "--template-button", "Read",
-      "--template-color-primary", "#1f4ed8",
-      "--template-color-secondary", "#e9edf7",
+      "--template-placeholder", "Password",
+      "--template-error", "That password didn’t work — try again.",
     ],
     { stdio: ["ignore", "ignore", "inherit"] },
   );
