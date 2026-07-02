@@ -131,4 +131,4 @@ The achievable band is real and it's narrow: 1–3% incremental lift on a holdou
 
 Fix measurement first — the holdout, the multi-metric stack, the score-on-drop logs. Then fix architecture — one balancer on one budget, then the ranker, then the content. Hyper-personalization has moved from buzzword to baseline. The platforms that win aren't the ones with the cleverest headline — they're the ones that measure the right number and build in the right order.
 
-*Companion piece on the generative half of this stack — generation, selection, and the loop you must never close: [writing comms with generative AI](/writing/generative-ai-comms/).*
+*This piece is the map of the whole stack — the envelope, the platform shapes, and the build order. Two companions go deeper on single layers: [writing comms with generative AI](/writing/generative-ai-comms/) — the content engine, from generation to the loop you must never close — and [inside the marketplace messenger](/writing/messenger-ai-ml/) — the surface where the deal actually closes.*
