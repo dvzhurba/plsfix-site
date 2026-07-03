@@ -32,6 +32,11 @@ Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds `site/` 
 publishes `site/dist`. Turn it on once: repo **Settings → Pages → Build and deployment →
 Source: GitHub Actions**.
 
+If the Pages deploy step fails transiently ("Deployment failed, try again later"),
+re-run the workflow from the Actions tab, or push any change touching `site/` or
+`website-content/` — the workflow only runs on those paths, so an empty commit
+won't retrigger it.
+
 ### Custom domain
 
 The site is configured for `www.plsfix.co.uk` (`site/public/CNAME`). To deploy elsewhere,
