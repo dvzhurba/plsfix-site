@@ -10,8 +10,7 @@ Product leader — AI/ML & P&L at scale. Nine years launching 0–1 products and
 ## Experience
 
 **Product, International Expansion — Avito** · 2026–present
-Run product end-to-end for the international expansion — growth, monetisation, and the AI/ML roadmap. <!-- title TBC 16 Jul: Principal Product Manager / Head of Product -->
-
+Run product end-to-end for the international expansion — growth, monetisation, and the AI/ML roadmap.
 
 **Product Lead — Communications & AI/ML — [Avito](/work/ai-communications-platform)** · 2024–2026
 One of the world's largest online marketplaces (60M+ monthly users). Led communications and buyer-engagement products across multiple teams; authored the board-approved investment case to scale the communications platform; GenAI lead for marketing and communications. Shipped ML/GenAI initiatives — ranking, bandits, uplift models, LLM-generated personalised content — across messenger, email, push, and in-app, at billions of messages a month.
