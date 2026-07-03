@@ -9,7 +9,7 @@ Product leader — AI/ML & P&L at scale. Nine years launching 0–1 products and
 
 ## Experience
 
-**Product, International Expansion — Avito** · 2026–present
+**Principal Product Manager / Head of Product, International Expansion — Avito** · 2026–present
 Run product end-to-end for the international expansion — growth, monetisation, and the AI/ML roadmap.
 
 **Product Lead — Communications & AI/ML — [Avito](/work/ai-communications-platform)** · 2024–2026
