@@ -1,9 +1,9 @@
 // Central site metadata. Fill the TODO links before launch (Appendix B of the PRD).
 export const SITE = {
   name: 'Denis Zhurba',
-  title: 'Denis Zhurba — Product leader, AI/ML at scale',
+  title: 'Denis Zhurba — Product leader, AI/ML & P&L at scale',
   description:
-    'Denis Zhurba builds AI/ML products. Consulting and strategy, then a hands-on consumer AI startup, now AI/ML product leadership — currently in country management at an international e-commerce platform.',
+    "Denis Zhurba — product leader, AI/ML & P&L at scale. Consulting and strategy, then a hands-on consumer AI startup, now running product end-to-end for Avito's international expansion.",
   email: 'info@plsfix.co.uk',
   profiles: {
     LinkedIn: 'https://www.linkedin.com/in/deniszhurba/',

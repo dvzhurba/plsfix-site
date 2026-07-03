@@ -2,7 +2,7 @@
 title: BOXR — AI sports-coaching app
 role: Founder, CEO & Product Lead (Kinetic Ventures)
 dates: 2022–2024 · acquired by a PE roll-up
-summary: Built and exited an AI boxing-coaching app using on-device computer vision and LLM feedback that reached the top of its category.
+summary: Built and exited AI coaching for boxing — a consumer app plus in-gym software, sold as a bundle to gyms — on-device computer vision and LLM feedback, top of its category.
 contribution: Founded the company and owned the product end to end — CV tracking, LLM feedback, monetisation, and the hardware-to-software pivot.
 outcome: Top-5 in the UK and top-10 in the US in Health & Fitness (Google Play, Top Free, Jul 2024); ~250k installs in the first 6 months; 4.6 rating; trial starts lifted ~5x to ~13%.
 links:
