@@ -1,0 +1,37 @@
+# Denis Zhurba
+
+> Product leader — AI/ML & P&L at scale. Runs product end-to-end at an international e-commerce
+> platform; previously built the AI communications engine at Avito, a 60M-MAU marketplace
+> (GenAI Lead for marketing & communications); founded BOXR, an AI coaching company for boxing
+> (acquired by a PE roll-up); product & strategy at VK; strategy consulting at EY-Parthenon.
+> MBA, London Business School.
+
+This site is the professional home of Denis Zhurba: writing on AI/ML in communications and growth,
+work case studies, talks, and recognition.
+
+## Writing (practitioner analyses, self-published)
+
+- [What AI/ML is actually capable of in CRM in 2026](https://www.plsfix.co.uk/writing/ai-ml-crm-2026/): the achievable band for AI/ML-driven CRM — incremental lift on a global control group, the four platform shapes, the lifecycle of a message, build order; anchored to published results (Pinterest KDD 2018, Twitter arXiv 2202.08812, Kuaishou PushGen WSDM 2026).
+- [Inside the marketplace messenger: the AI/ML that helps strangers transact](https://www.plsfix.co.uk/writing/messenger-ai-ml/): intent and inbox ranking, suggested replies, negotiation, the agreement signal that stands in for off-platform deals, assistants, and trust & safety.
+- [Writing comms with generative AI: a pipeline, not a prompt](https://www.plsfix.co.uk/writing/generative-ai-comms/): the content engine — generation under category control, deterministic checks, LLM-as-judge evals on held-out sets, pairwise reward-model selection, rotation — and why the generator is never optimised against raw CTR.
+- The flagship analysis (the communications investment case) is available to editors on request via [contact](https://www.plsfix.co.uk/contact/).
+
+## Work
+
+- [AI-driven communications platform (Avito)](https://www.plsfix.co.uk/work/ai-communications-platform/): board-approved investment case; ML ranking, uplift models, LLM content with reward-model selection; billions of messages a month.
+- [BOXR — AI coaching for boxing](https://www.plsfix.co.uk/work/boxr/): consumer app plus in-gym software, sold as a bundle; on-device computer vision; acquired.
+- [VK smart speakers](https://www.plsfix.co.uk/work/vk-smart-speakers/): GTM for the Marusya AI assistant and Capsula smart-speaker line.
+
+## About
+
+- [About](https://www.plsfix.co.uk/about/)
+- [CV](https://www.plsfix.co.uk/cv/)
+- [Talks](https://www.plsfix.co.uk/talks/)
+- [Recognition](https://www.plsfix.co.uk/recognition/)
+- [Contact](https://www.plsfix.co.uk/contact/)
+
+## Profiles
+
+- [LinkedIn](https://www.linkedin.com/in/deniszhurba/)
+- [HackerNoon](https://hackernoon.com/u/dzhurba)
+- [GitHub](https://github.com/dvzhurba)

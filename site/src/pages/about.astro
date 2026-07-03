@@ -10,10 +10,22 @@ const person = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: SITE.name,
-  jobTitle: "Product Leader, AI/ML",
+  jobTitle: "Product Leader — AI/ML & P&L at scale",
   url: new URL(withBase("/"), Astro.site).href,
   description: (about?.data as any)?.bio_short,
-  sameAs: Object.values(SITE.profiles),
+  sameAs: [...Object.values(SITE.profiles), "https://hackernoon.com/u/dzhurba"],
+  knowsAbout: [
+    "AI/ML product management",
+    "CRM and communications platforms at scale",
+    "LLM content generation, evals, and reward-model selection",
+    "uplift modeling and incrementality measurement",
+    "marketplace messaging and buyer engagement",
+    "computer vision consumer products",
+  ],
+  alumniOf: [
+    { "@type": "CollegeOrUniversity", name: "London Business School" },
+    { "@type": "CollegeOrUniversity", name: "HEC Paris" },
+  ],
 };
 ---
 <Base title="About" description={(about?.data as any)?.bio_short} jsonLd={person}>
