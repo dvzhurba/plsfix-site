@@ -3,7 +3,7 @@ name: Denis Zhurba
 hook: "Consulting and strategy → hacked a consumer AI/ML startup → AI/ML product leadership."
 identity:
   - label: Currently
-    html: '<strong>Principal Product Manager / Head of Product — International Expansion</strong> at Avito: product end-to-end — growth, monetisation, the AI/ML roadmap'
+    html: '<strong>Principal Product Manager / Head of Product — International Expansion</strong>: product end-to-end — growth, monetisation, the AI/ML roadmap'
   - label: Previously
     html: 'led AI-driven communications at <a href="/work/ai-communications-platform">Avito</a>, founded <a href="/work/boxr">BOXR</a> (a consumer AI coaching app), product &amp; strategy at <a href="/work/vk-smart-speakers">VK</a>, strategy consulting at EY-Parthenon'
   - label: Studied
