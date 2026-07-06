@@ -9,12 +9,20 @@
 This site is the professional home of Denis Zhurba: writing on AI/ML in communications and growth,
 work case studies, talks, and recognition.
 
-## Writing (practitioner analyses, self-published)
+## Writing (practitioner analyses)
 
-- [What AI/ML is actually capable of in CRM in 2026](https://www.plsfix.co.uk/writing/ai-ml-crm-2026/): the achievable band for AI/ML-driven CRM — incremental lift on a global control group, the four platform shapes, the lifecycle of a message, build order; anchored to published results (Pinterest KDD 2018, Twitter arXiv 2202.08812, Kuaishou PushGen WSDM 2026).
-- [Inside the marketplace messenger: the AI/ML that helps strangers transact](https://www.plsfix.co.uk/writing/messenger-ai-ml/): intent and inbox ranking, suggested replies, negotiation, the agreement signal that stands in for off-platform deals, assistants, and trust & safety.
-- [Writing comms with generative AI: a pipeline, not a prompt](https://www.plsfix.co.uk/writing/generative-ai-comms/): the content engine — generation under category control, deterministic checks, LLM-as-judge evals on held-out sets, pairwise reward-model selection, rotation — and why the generator is never optimised against raw CTR.
-- The flagship analysis (the communications investment case) is available to editors on request via [contact](https://www.plsfix.co.uk/contact/).
+Denis writes on the economics and architecture of AI/ML communications at scale. The core set —
+an investment-case analysis of AI-driven comms platforms; a practitioner's map of what AI/ML is
+capable of in CRM in 2026 (incrementality on a global control group, platform shapes, build
+order); a deep-dive on the marketplace messenger's AI/ML (intent, suggested replies, the
+agreement signal, trust & safety); and a generative-content pipeline piece (LLM-as-judge evals,
+pairwise reward-model selection, reward-hacking) — is currently reserved for editors ahead of
+exclusive placement; access on request via [contact](https://www.plsfix.co.uk/contact/). Index:
+[writing](https://www.plsfix.co.uk/writing/).
+
+Publicly readable now:
+- [The Future of Buyer Engagement Platforms: Hyper-Personalization with AI](https://hackernoon.com/the-future-of-buyer-engagement-platforms-hyper-personalization-with-ai) (HackerNoon)
+- [Why 85% of Health & Fitness Apps Never Reach $1k MRR](https://hackernoon.com/why-85percent-of-health-and-fitness-apps-never-reach-$1k-mtr-and-how-to-build-one-that-does) (HackerNoon)
 
 ## Work
 
