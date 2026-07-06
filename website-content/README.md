@@ -18,3 +18,4 @@ recognition/  awards, mentoring, press
 - Numbers and verifiable links carry credibility; avoid superlatives.
 - Every recognition/talk item should link to a real source; `url: TODO` marks what's still needed.
 - ALL-CAPS or `TODO` placeholders are still to fill in (links, dates, profile URLs).
+
