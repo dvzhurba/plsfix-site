@@ -13,7 +13,7 @@ Product leader — AI/ML & P&L at scale. Nine years launching 0–1 products and
 Run product end-to-end for the international expansion — growth, monetisation, and the AI/ML roadmap.
 
 **Product Lead — Communications & AI/ML — [Avito](/work/ai-communications-platform)** · 2024–2026
-One of the world's largest online marketplaces (60M+ monthly users). Led communications and buyer-engagement products across multiple teams; authored the board-approved investment case to scale the communications platform; GenAI lead for marketing and communications. Shipped ML/GenAI initiatives — ranking, bandits, uplift models, LLM-generated personalised content — across messenger, email, push, and in-app, at billions of messages a month.
+One of the world's largest online marketplaces (60M+ monthly users). Led communications and buyer-engagement products across multiple teams; authored the board-approved investment case to scale the communications platform; GenAI lead for marketing and communications. Shipped ML/GenAI initiatives — ranking, bandits, uplift models, LLM-generated personalised content — across messenger, email, push, and in-app, at billions of messages a month; 5% incremental lift in buyers on Android against a global control group; 1.5x annual revenue uplift.
 
 **Founder, CEO & Head of Product — [BOXR / Kinetic](/work/boxr)** · 2022–2024 (acquired by a PE roll-up)
 Built and exited AI coaching for boxing — a consumer app plus in-gym software, sold as a bundle. On-device computer vision (Google ML Kit / MediaPipe, 97%+ tracking accuracy), RAG-LLM feedback, fine-tuned TTS. Reached Top Free and Top Grossing in Health & Wellness; ~250k installs in first 6 months, 4.6 rating. A/B-tested onboarding and paywalls lifted trial starts ~5x to ~13%.
