@@ -14,6 +14,7 @@ selected_writing:
   - ai-ml-crm-2026
   - messenger-ai-ml
   - generative-ai-comms
+  - craft-leverage-valley
   - hn-buyer-engagement
 about: "Nine years delivering business results with AI/ML — 0→1 to 100M+ users, P&L owned, and the teams behind it."
 ctas:
