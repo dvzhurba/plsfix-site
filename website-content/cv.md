@@ -9,8 +9,8 @@ Product leader — AI/ML & P&L at scale. Nine years launching 0–1 products and
 
 ## Experience
 
-**Principal Product Manager / Head of Product — International Expansion** · 2026–present
-Run product end-to-end for the international expansion — growth, monetisation, and the AI/ML roadmap.
+**Principal Product Manager / Head of Product — Listee** · 2026–present
+C2C commerce for emerging markets (Central Asia → Middle East & Southeast Asia). Run product end-to-end — growth, monetisation, the AI/ML roadmap, and AI-powered trust & safety.
 
 **Product Lead — Communications & AI/ML — [Avito](/work/ai-communications-platform)** · 2024–2026
 One of the world's largest online marketplaces (60M+ monthly users). Led communications and buyer-engagement products across multiple teams; authored the board-approved investment case to scale the communications platform; GenAI lead for marketing and communications. Shipped ML/GenAI initiatives — ranking, bandits, uplift models, LLM-generated personalised content — across messenger, email, push, and in-app, at billions of messages a month; 5% incremental lift in buyers on Android against a global control group; 1.5x annual revenue uplift.

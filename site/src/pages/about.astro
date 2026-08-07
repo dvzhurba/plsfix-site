@@ -11,6 +11,7 @@ const person = {
   "@type": "Person",
   name: SITE.name,
   jobTitle: "Product Leader — AI/ML & P&L at scale",
+  worksFor: { "@type": "Organization", name: "Listee" },
   url: new URL(withBase("/"), Astro.site).href,
   description: (about?.data as any)?.bio_short,
   sameAs: [...Object.values(SITE.profiles), "https://hackernoon.com/u/dzhurba"],

@@ -1,13 +1,13 @@
 ---
 title: About
-bio_short: Denis Zhurba is a product leader — AI/ML & P&L at scale. Runs product end-to-end at an international e-commerce platform; previously built Avito's AI comms engine (GenAI Lead), founded BOXR (acquired), product & strategy at VK. MBA, London Business School.
+bio_short: Denis Zhurba is a product leader — AI/ML & P&L at scale. Runs product end-to-end at Listee (C2C commerce for emerging markets); previously built Avito's AI comms engine (GenAI Lead), founded BOXR (acquired), product & strategy at VK. MBA, London Business School.
 ---
 
 # About
 
 I deliver business results with AI/ML — and I've done it from a few different seats.
 
-Right now I run product end-to-end for an **international e-commerce platform** — growth, monetisation, and the AI/ML roadmap.
+Right now I'm Principal PM / Head of Product at **Listee** — a C2C commerce platform (listings, payments, delivery, and AI-powered trust & safety) building for Central Asia and scaling across the Middle East and Southeast Asia. I run product end-to-end: growth, monetisation, the AI/ML roadmap, and the trust & safety layer.
 
 Before that, at [**Avito**](/work/ai-communications-platform) — one of the world's largest marketplaces, 60M+ monthly users — I ran communications and buyer-engagement as an AI/ML product. I wrote the board-approved case to turn batch messaging into an ML-driven growth system — LLM-generated content with reward models, ranking and bandit algorithms, uplift modelling, and send-time optimisation across messenger, email, push, and in-app — and served as GenAI lead for marketing and communications. It moved billions of messages a month and, against a global control group, reached a 5% incremental lift in buyers on Android. I've written up [what's actually achievable, and the architecture that gets you there](/writing/ai-ml-crm-2026/).
 

@@ -17,7 +17,7 @@
 // so dev builds stay readable.
 
 import { execFileSync } from "node:child_process";
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, unlinkSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -87,6 +87,31 @@ function encrypt(file, password) {
   );
   console.log(`[encrypt-private] protected ${path.relative(dist, file)}`);
   return true;
+}
+
+// Whole-site gate ("for now"): when GATE_ALL is set, every built page goes
+// behind the main password, and the non-HTML files that would leak content
+// (RSS, sitemap, llms.txt) are removed. Unset GATE_ALL to return to per-page
+// gating below.
+if (/^(1|true|yes)$/i.test(process.env.GATE_ALL || "")) {
+  const htmlFiles = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith(".html")) htmlFiles.push(p);
+    }
+  };
+  walk(dist);
+  let n = 0;
+  for (const f of htmlFiles) n += encrypt(f, mainPw) ? 1 : 0;
+  // Strip content-leaking non-HTML artifacts that StatiCrypt can't encrypt.
+  for (const leak of ["rss.xml", "sitemap-index.xml", "sitemap-0.xml", "llms.txt"]) {
+    const lp = distPath(leak);
+    if (existsSync(lp)) { unlinkSync(lp); console.log(`[encrypt-private] removed ${leak}`); }
+  }
+  console.log(`[encrypt-private] GATE_ALL — whole site gated: ${n} page(s) behind the password.`);
+  process.exit(0);
 }
 
 let count = 0;

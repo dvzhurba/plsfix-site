@@ -3,7 +3,7 @@ export const SITE = {
   name: 'Denis Zhurba',
   title: 'Denis Zhurba — Product leader, AI/ML & P&L at scale',
   description:
-    'Denis Zhurba — product leader, AI/ML & P&L at scale. Consulting and strategy, then a hands-on consumer AI startup, now running product end-to-end at an international e-commerce platform.',
+    'Denis Zhurba — product leader, AI/ML & P&L at scale. Consulting and strategy, then a hands-on consumer AI startup, now running product end-to-end at Listee, a C2C commerce platform scaling across emerging markets.',
   email: 'info@plsfix.co.uk',
   profiles: {
     LinkedIn: 'https://www.linkedin.com/in/deniszhurba/',
