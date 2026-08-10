@@ -11,7 +11,7 @@ tags: [ai, ml, llm, communications, growth, product-leadership]
 featured: true
 ---
 
-At Avito — one of the world's largest online marketplaces, 60M+ monthly users — I led communications and buyer-engagement products. Communications was running as a cost-centre channel — campaign teams, a send tool, open-rate dashboards. I authored the board-approved investment case to turn it into an ML-driven product, defended it through CEO and board review, and led the delivery.
+At Avito — one of the world's largest online platforms, 60M+ monthly users — I led communications and buyer-engagement products. Communications was running as a cost-centre channel — campaign teams, a send tool, open-rate dashboards. I authored the board-approved investment case to turn it into an ML-driven product, defended it through CEO and board review, and led the delivery.
 
 **What I built.** A system, not more campaigns: a measurement substrate (global control group and a multi-metric outcome stack), a single orchestrator holding one per-user message budget, a ranking-and-filtering stack (candidate ranker, uplift head, send/no-send filter), an LLM content engine with a learned reward model, and deep-linked landing and notification surfaces. The platform spans messenger, email, push, and in-app and operates at billions of messages per month. Measured against a global control group — incrementality, not attribution — it reached a 5% incremental lift in buyers on Android and grew its annual revenue uplift 1.5x.
 
