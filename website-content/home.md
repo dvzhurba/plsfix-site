@@ -3,7 +3,7 @@ name: Denis Zhurba
 hook: "Consulting and strategy → hacked a consumer AI/ML startup → AI/ML product leadership."
 identity:
   - label: Currently
-    html: '<strong>Principal Product Manager / Head of Product, Listee</strong> — a C2C commerce platform scaling across emerging markets: product end-to-end, from growth and monetisation to the AI/ML and trust &amp; safety roadmap'
+    html: '<strong>Principal Product Manager / Head of UZ Product, Listee</strong> — a C2C commerce platform scaling across emerging markets: product end-to-end, from growth and monetisation to the AI/ML and trust &amp; safety roadmap'
   - label: Previously
     html: 'led AI-driven communications at <a href="/work/ai-communications-platform">Avito</a>, founded <a href="/work/boxr">BOXR</a> (a consumer AI coaching app), product &amp; strategy at <a href="/work/vk-smart-speakers">VK</a>, strategy consulting at EY-Parthenon'
   - label: Studied

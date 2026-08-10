@@ -9,7 +9,7 @@ Product leader — AI/ML & P&L at scale. Nine years launching 0–1 products and
 
 ## Experience
 
-**Principal Product Manager / Head of Product — Listee** · 2026–present
+**Principal Product Manager / Head of UZ Product — Listee** · 2026–present
 C2C commerce for emerging markets (Central Asia → Middle East & Southeast Asia). Run product end-to-end — growth, monetisation, the AI/ML roadmap, and AI-powered trust & safety.
 
 **Product Lead — Communications & AI/ML — [Avito](/work/ai-communications-platform)** · 2024–2026
