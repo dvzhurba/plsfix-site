@@ -93,4 +93,4 @@ One failure mode dominates. Close the loop — RL or DPO the *generator* directl
 
 Generate broadly, gate cheaply, judge strictly, select on outcomes, rotate continuously — and never optimise the generator against raw CTR. The copy that performs is the one that passed the checks, the judge, and the reward model's comparison before it cost a single send.
 
-*This piece covers one layer — the content engine. For the architecture it sits inside — measurement, orchestration, and where AI plugs into the rest of the comms stack — see [what AI/ML is actually capable of in CRM in 2026](/writing/ai-ml-crm-2026/); for the conversational surface those messages land on, see [inside the classifieds messenger](/writing/messenger-ai-ml/).*
+*This piece covers one layer — the content engine. For the architecture it sits inside — measurement, orchestration, and where AI plugs into the rest of the comms stack — see [what AI/ML is actually capable of in CRM in 2026](/writing/ai-ml-crm-2026/); for the conversational surface those messages land on, see [inside the marketplace messenger](/writing/messenger-ai-ml/).*

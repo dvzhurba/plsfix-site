@@ -57,7 +57,7 @@ A production note on rigor. Run the holdout at a strict significance bar (mine r
 
 ## The four shapes of CRM platform
 
-The published CRM literature comes almost entirely from one platform shape — Pinterest, Twitter, and Kuaishou are all large-catalog, high-signal platforms — and its advice transfers only where the shape matches. Two dimensions place your platform: *catalog size* (a neobank's eight products vs. a classifieds platform's millions of listings) and *signal volume per user* (rich daily telemetry vs. a sparse weekly visit).
+The published CRM literature comes almost entirely from one platform shape — Pinterest, Twitter, and Kuaishou are all large-catalog, high-signal platforms — and its advice transfers only where the shape matches. Two dimensions place your platform: *catalog size* (a neobank's eight products vs. a marketplace's millions of listings) and *signal volume per user* (rich daily telemetry vs. a sparse weekly visit).
 
 <figure class="fig">
 <div class="viz">
@@ -65,7 +65,7 @@ The published CRM literature comes almost entirely from one platform shape — P
 <span class="ax-y">Signal volume / user →</span>
 <div class="quadgrid">
 <div class="quad"><div class="ql">Quadrant A</div><div class="qn">LLM-first</div><div class="qx">Neobanks, fintech (Revolut)</div><div class="qd">Small catalog, dense signal — the LLM reads recent activity and reasons over the whole catalog in one prompt.</div><div class="qt">Trap: building a recommender you don't need.</div></div>
-<div class="quad"><div class="ql">Quadrant D</div><div class="qn">Full stack</div><div class="qx">Large e-com platforms, social</div><div class="qd">Every layer is independently hard and must be composed. Most published CRM writing describes this shape.</div><div class="qt">Trap: assuming D-advice transfers down to A/B/C.</div></div>
+<div class="quad"><div class="ql">Quadrant D</div><div class="qn">Full stack</div><div class="qx">Large marketplaces, social</div><div class="qd">Every layer is independently hard and must be composed. Most published CRM writing describes this shape.</div><div class="qt">Trap: assuming D-advice transfers down to A/B/C.</div></div>
 <div class="quad"><div class="ql">Quadrant C</div><div class="qn">Orchestration-first</div><div class="qx">Duolingo</div><div class="qd">Few message types, but cadence and journey are the whole game — balancer, send-time, suppression.</div><div class="qt">Trap: over-investing in LLM copy variants.</div></div>
 <div class="quad"><div class="ql">Quadrant B</div><div class="qn">Recommender-first</div><div class="qx">Netflix, Spotify</div><div class="qd">Millions of items; CRM wraps the recommender's scores in copy — a delivery layer on existing personalization.</div><div class="qt">Trap: re-deriving personalisation you already have.</div></div>
 </div>
@@ -77,7 +77,7 @@ The published CRM literature comes almost entirely from one platform shape — P
 
 ## The lifecycle of a communication
 
-> **The loop.** A buyer searches a classifieds platform for a road bike under €1,500 and does not buy. An hour later a push surfaces three similar bikes and a pannier rack; the next day an in-app message — the seller dropped the price, with a code for free delivery — and the buyer converts. None of it is a blast. Behind it is a loop: trigger → modeling → content → orchestration → placement → feedback, and every serious CRM platform runs a version of it.
+> **The loop.** A buyer searches a marketplace for a road bike under €1,500 and does not buy. An hour later a push surfaces three similar bikes and a pannier rack; the next day an in-app message — the seller dropped the price, with a code for free delivery — and the buyer converts. None of it is a blast. Behind it is a loop: trigger → modeling → content → orchestration → placement → feedback, and every serious CRM platform runs a version of it.
 
 <figure class="fig">
 <div class="viz">
@@ -149,4 +149,4 @@ The published band is real: 1–3% incremental lift on GCG, UR under 1%, engagem
 
 Fix measurement first — the holdout, the multi-metric stack, the score-on-drop logs. Then fix architecture — one balancer on one budget, then the ranker, then the content. Hyper-personalization has moved from buzzword to baseline. The platforms that win are not the ones with the cleverest headline; they are the ones that measure the right number and build in the right order.
 
-*This piece is the map of the whole stack — the envelope, the platform shapes, and the build order. Two companions go deeper on single layers: [writing comms with generative AI](/writing/generative-ai-comms/) — the content engine, from generation to the loop you must never close — and [inside the classifieds messenger](/writing/messenger-ai-ml/) — the surface where the deal actually closes.*
+*This piece is the map of the whole stack — the envelope, the platform shapes, and the build order. Two companions go deeper on single layers: [writing comms with generative AI](/writing/generative-ai-comms/) — the content engine, from generation to the loop you must never close — and [inside the marketplace messenger](/writing/messenger-ai-ml/) — the surface where the deal actually closes.*
