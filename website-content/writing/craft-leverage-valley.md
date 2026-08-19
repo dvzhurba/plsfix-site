@@ -7,7 +7,7 @@ tags: [leadership, product, careers, management, org-design]
 featured: false
 ---
 
-This year I crossed a border most career advice pretends isn't there. Same person, same skills, two companies with opposite physics: a marketplace at scale, where a wrong bold move costs more than a hundred cautious-but-slow ones, and its earlier-stage international spin-off, where the only fatal move is not moving. The behaviours that read as "senior leadership" on one side read as liabilities on the other — and nothing about me changed. Only the loss function did.
+This year I crossed a border most career advice pretends isn't there. Same person, same skills, two companies with opposite physics: an e-commerce platform at scale, where a wrong bold move costs more than a hundred cautious-but-slow ones, and its earlier-stage international spin-off, where the only fatal move is not moving. The behaviours that read as "senior leadership" on one side read as liabilities on the other — and nothing about me changed. Only the loss function did.
 
 There is no good leader in the abstract. There is a mode that fits the company you're in, and — the part the org chart doesn't show — a route through your own career that trades one kind of value for another, with a valley in the middle that swallows good people. This is a guide to reading both: the company's loss function, and the craft-versus-leverage curve you're actually choosing your spot on.
 
@@ -20,7 +20,7 @@ Before you pick a style, read what the organisation is optimising — it isn't t
 <div class="quadframe">
 <span class="ax-y">Cost structure: scale →</span>
 <div class="quadgrid">
-<div class="quad"><div class="ql">Scale · control</div><div class="qn">Incumbent platform</div><div class="qx">Big-tech, marketplaces at scale</div><div class="qd">Wrong bold move at 100M users is the expensive error; slow is cheap. Optimises coordination, alignment, predictability.</div><div class="qt">Rewards: manager mode.</div></div>
+<div class="quad"><div class="ql">Scale · control</div><div class="qn">Incumbent platform</div><div class="qx">Big-tech, e-com platforms at scale</div><div class="qd">Wrong bold move at 100M users is the expensive error; slow is cheap. Optimises coordination, alignment, predictability.</div><div class="qt">Rewards: manager mode.</div></div>
 <div class="quad"><div class="ql">Scale · speed</div><div class="qn">Platform in disruption</div><div class="qx">Incumbent under existential threat ("wartime")</div><div class="qd">Rare and temporary: a large org that has to move like a small one. Founder-mode-at-scale, on a clock.</div><div class="qt">Rewards: founder mode, borrowed.</div></div>
 <div class="quad"><div class="ql">Launch · control</div><div class="qn">Regulated / deep-tech startup</div><div class="qx">Fintech, health, hardware</div><div class="qd">Small but a wrong move is irreversible or illegal. Control even at low scale — the exception to "startup = speed".</div><div class="qt">Rewards: disciplined founder mode.</div></div>
 <div class="quad"><div class="ql">Launch · speed</div><div class="qn">Startup / spin-off</div><div class="qx">Pre-PMF, new market entry</div><div class="qd">Not moving is the only fatal error; a wrong bet is cheap and reversible. Optimises learning velocity.</div><div class="qt">Rewards: founder mode.</div></div>
